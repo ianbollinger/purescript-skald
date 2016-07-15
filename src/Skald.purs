@@ -6,7 +6,7 @@
 
 module Skald (
     -- * Applications
-    module Skald.App,
+    module Skald.Application,
 
     -- * Tales
     module Skald.Tale,
@@ -79,7 +79,7 @@ import Skald.Action (
     dropping, drop,
     waiting, wait
     )
-import Skald.App (Effects, run)
+import Skald.Application (Effects, run)
 import Skald.Direction (
     Direction, north, northeast, east, southeast, south, southwest, west,
     northwest, up, down
