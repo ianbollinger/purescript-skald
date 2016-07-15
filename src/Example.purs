@@ -80,7 +80,7 @@ stalactites = scenery "stalactites"
 poolOfWater :: Object
 poolOfWater = scenery "pool of water"
     "You suspected a spring fed this pool."
-    # insteadOf taking (say "you lacked a container to carry water.")
+    # insteadOf taking (say "You lacked a container to carry water.")
 
 waterline :: Object
 waterline = scenery "waterline"
@@ -245,7 +245,7 @@ gallery = place "gallery"
 
 galleryWalls :: Object
 galleryWalls = scenery "gallery walls"
-    "you imagined the walls of the gallery once held portraits of the many\
+    "You imagined the walls of the gallery once held portraits of the many\
     \ masters of Akkonai."
 
 brokenPictureFrames :: Object
