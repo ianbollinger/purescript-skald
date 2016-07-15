@@ -118,7 +118,6 @@ hole = scenery "hole"
 
 northernInnerWardCourtyard :: Place
 northernInnerWardCourtyard = place "northern inner ward courtyard"
---    # exterior
     # withExits [
         down `to` "well",
         north `to` "keep approach",
@@ -181,7 +180,6 @@ keepDoor = scenery "keep door"
 
 southernInnerWardCourtyard :: Place
 southernInnerWardCourtyard = place "southern inner ward courtyard"
---    # exterior
     # withExits [
         north `to` "northern inner ward courtyard",
         east `to` "gallery",
