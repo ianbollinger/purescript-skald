@@ -6,10 +6,8 @@
 
 module Main where
 
-import Control.Monad.Eff (Eff)
-
 import Skald
 import Example as Example
 
-main :: Eff (Effects ()) Unit
+main :: Application
 main = Example.main

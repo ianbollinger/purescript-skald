@@ -6,14 +6,11 @@
 
 module Example where
 
--- TODO: export from Skald.
-import Control.Monad.Eff (Eff)
-
 import Skald
 
 -- Volume - Front matter -------------------------------------------------------
 
-main :: Eff (Effects ()) Unit
+main :: Application
 main = tale "Example Tale"
     # by "Ian D. Bollinger"
     # thatBeginsIn cavernEntrance

@@ -5,6 +5,7 @@
 -- or distributed except according to those terms.
 
 module Skald.Application (
+    Application,
     Effects,
     run
     ) where
@@ -38,6 +39,8 @@ import Skald.Tale as Tale
 import Skald.Tale (Tale)
 import Skald.World as World
 
+type Application = Eff (Effects ()) Unit
+
 type Effects eff = H.HalogenEffects (focus :: FOCUS | eff)
 
 data Query a
@@ -45,7 +48,7 @@ data Query a
     | Submit String a
 
 -- | Tell the given tale.
-run :: Tale -> Eff (Effects ()) Unit
+run :: Tale -> Application
 run tale = runHalogenAff do
     body <- awaitBody
     H.runUI (ui tale) (startUp tale) body

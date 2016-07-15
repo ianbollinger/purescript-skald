@@ -79,7 +79,7 @@ import Skald.Action (
     dropping, drop,
     waiting, wait
     )
-import Skald.Application (Effects, run)
+import Skald.Application (Application, Effects, run)
 import Skald.Direction (
     Direction, north, northeast, east, southeast, south, southwest, west,
     northwest, up, down
