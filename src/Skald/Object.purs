@@ -57,9 +57,9 @@ fixedInPlace (Object object') = object'.fixedInPlace
 
 -- TODO: add other combinators, i.e. before, after, etc.
 insteadOf :: Command -> Action Unit -> Object -> Object
-insteadOf command action (Object object'@{ commands: commands' }) =
-    Object (object' { commands = Map.insert command action commands' })
+insteadOf command' action (Object object'@{ commands: commands' }) =
+    Object (object' { commands = Map.insert command' action commands' })
 
 command :: Command -> Object -> Maybe (Action Unit)
-command command (Object { commands: commands' }) =
-    Map.lookup command commands'
+command command' (Object { commands: commands' }) =
+    Map.lookup command' commands'
