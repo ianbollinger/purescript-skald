@@ -4,10 +4,11 @@
 -- http://opensource.org/licenses/MIT>. This file may not be copied, modified,
 -- or distributed except according to those terms.
 
--- | Contains the type for the cardinal directions.
+-- | Contains the data type for the cardinal directions.
 module Skald.Direction (
     Direction (..),
     fromString,
+    opposite,
     north,
     northeast,
     east,
@@ -27,7 +28,6 @@ import Data.Maybe (Maybe (..))
 
 import Skald.Debug (class Debug)
 
--- TODO: opposite function.
 data Direction
     = North
     | Northeast
@@ -64,6 +64,8 @@ instance showDirection :: Show Direction where
 instance debugDirection :: Debug Direction where
     debug = show
 
+-- | The corresponding direction for the given string, if the string is the name
+-- of a lower case cardinal direction.
 fromString :: String -> Maybe Direction
 fromString string = case string of
     "north" -> Just North
@@ -77,6 +79,20 @@ fromString string = case string of
     "up" -> Just Up
     "down" -> Just Down
     _ -> Nothing
+
+-- | The direction opposite the given direction.
+opposite :: Direction -> Direction
+opposite direction = case direction of
+    North -> South
+    Northeast -> Southwest
+    East -> West
+    Southeast -> Northwest
+    South -> North
+    Southwest -> Northeast
+    West -> East
+    Northwest -> Southeast
+    Up -> Down
+    Down -> Up
 
 -- | The direction north.
 north :: Direction
