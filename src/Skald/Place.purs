@@ -41,6 +41,7 @@ import Prelude
 
 import Data.List as List
 import Data.List (List)
+import Data.Map as Map
 import Data.Maybe (Maybe)
 import Data.StrMap as StrMap
 
@@ -54,7 +55,7 @@ place :: String -> Place
 place name' = Place {
     name: name',
     describer: const "",
-    exits: Exits (StrMap.empty),
+    exits: Exits (Map.empty),
     objects: Objects (StrMap.empty),
     visited: false
     }
@@ -79,11 +80,11 @@ exits (Place place') = place'.exits
 -- | The list of directions the place may be exited from.
 exitDirections :: Place -> List Direction
 exitDirections (Place { exits: Exits exits' }) =
-    List.fromFoldable (StrMap.keys exits')
+    List.fromFoldable (Map.keys exits')
 
 -- | Adds an exit to the given place via the given direction.
-exitName :: String -> Place -> Maybe String
-exitName exit (Place { exits: Exits exits' }) = StrMap.lookup exit exits'
+exitName :: Direction -> Place -> Maybe String
+exitName exit (Place { exits: Exits exits' }) = Map.lookup exit exits'
 
 -- | Whether a place has been visited by the player.
 visited :: Place -> Boolean

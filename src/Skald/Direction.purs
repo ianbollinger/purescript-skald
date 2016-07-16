@@ -6,7 +6,8 @@
 
 -- | Contains the type for the cardinal directions.
 module Skald.Direction (
-    Direction,
+    Direction (..),
+    fromString,
     north,
     northeast,
     east,
@@ -19,46 +20,100 @@ module Skald.Direction (
     down
     ) where
 
--- TODO: make into an ADT.
+import Prelude
+
+import Data.Generic (class Generic, gCompare, gEq)
+import Data.Maybe (Maybe (..))
+
+import Skald.Debug (class Debug)
+
 -- TODO: opposite function.
-type Direction = String
+data Direction
+    = North
+    | Northeast
+    | East
+    | Southeast
+    | South
+    | Southwest
+    | West
+    | Northwest
+    | Up
+    | Down
+
+derive instance genericDirection :: Generic Direction
+
+instance eqDirection :: Eq Direction where
+    eq = gEq
+
+instance ordDirection :: Ord Direction where
+    compare = gCompare
+
+instance showDirection :: Show Direction where
+    show direction = case direction of
+        North -> "north"
+        Northeast -> "northeast"
+        East -> "east"
+        Southeast -> "southeast"
+        South -> "south"
+        Southwest -> "southwest"
+        West -> "west"
+        Northwest -> "northwest"
+        Up -> "up"
+        Down -> "down"
+
+instance debugDirection :: Debug Direction where
+    debug = show
+
+fromString :: String -> Maybe Direction
+fromString string = case string of
+    "north" -> Just North
+    "northeast" -> Just Northeast
+    "east" -> Just East
+    "southeast" -> Just Southeast
+    "south" -> Just South
+    "southwest" -> Just Southwest
+    "west" -> Just West
+    "northwest" -> Just Northwest
+    "up" -> Just Up
+    "down" -> Just Down
+    _ -> Nothing
 
 -- | The direction north.
 north :: Direction
-north = "north"
+north = North
 
 -- | The direction northeast.
 northeast :: Direction
-northeast = "northeast"
+northeast = Northeast
 
 -- | The direction east.
 east :: Direction
-east = "east"
+east = East
 
 -- | The direction southeast.
 southeast :: Direction
-southeast = "southeast"
+southeast = Southeast
 
 -- | The direction south.
 south :: Direction
-south = "south"
+south = South
 
 -- | The direction southwest.
 southwest :: Direction
-southwest = "southwest"
+southwest = Southwest
 
 -- | The direction west.
 west :: Direction
-west = "west"
+west = West
 
 -- | The direction northwest.
 northwest :: Direction
-northwest = "northwest"
+northwest = Northwest
 
 -- | The direction up.
 up :: Direction
-up = "up"
+up = Up
 
 -- | The direction down.
 down :: Direction
-down = "down"
+down = Down

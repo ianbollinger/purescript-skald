@@ -315,7 +315,7 @@ knife = object "knife"
 
 larder :: Place
 larder = place "larder"
-    # withExit "south" "kitchen"
+    # withExit south "kitchen"
     # withDescription "The larder was bare save for a pile of torn sacks of\
         \ grain. Rodent droppings were apparent everywhere. The kitchen was to\
         \ the south."

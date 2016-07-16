@@ -16,6 +16,7 @@ module Skald.PlaceBuilder (
 import Prelude
 
 import Data.Foldable (foldr)
+import Data.Map as Map
 import Data.StrMap as StrMap
 import Data.Tuple (Tuple (..))
 
@@ -50,7 +51,7 @@ whenDescribing describer' (Place place') =
 -- | `withExit direction exitName place`
 withExit :: Direction -> String -> Place -> Place
 withExit direction exitName' (Place place'@{ exits: Place.Exits exits' }) =
-    Place (place' { exits = Place.Exits (StrMap.insert direction exitName' exits') })
+    Place (place' { exits = Place.Exits (Map.insert direction exitName' exits') })
 
 withExits :: Array (Tuple Direction String) -> Place -> Place
 withExits exits'' (Place place'@{ exits: Place.Exits exits' }) =
@@ -58,7 +59,7 @@ withExits exits'' (Place place'@{ exits: Place.Exits exits' }) =
     where
         update x =
             foldr (\(Tuple direction exitName') ->
-                StrMap.insert direction exitName') x exits''
+                Map.insert direction exitName') x exits''
 
 to :: forall a b. a -> b -> Tuple a b
 to = Tuple

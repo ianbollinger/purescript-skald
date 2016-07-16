@@ -35,6 +35,7 @@ import Data.StrMap (StrMap)
 import Data.Tuple (Tuple)
 
 import Skald.Debug (class Debug, debug)
+import Skald.Direction (Direction)
 
 data Object = Object {
     name :: String,
@@ -71,7 +72,7 @@ instance debugPlace :: Debug Place where
         \    # withExits " <> debug exits <> "\n\
         \    # containing " <> debug objects <> "\n"
 
-newtype Exits = Exits (StrMap String)
+newtype Exits = Exits (Map Direction String)
 
 instance eqExits :: Eq Exits where
     eq (Exits a) (Exits b) = eq a b

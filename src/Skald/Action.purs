@@ -36,6 +36,7 @@ import Data.Monoid (mempty)
 import Skald.Command as Command
 import Skald.Command (Command, command)
 import Skald.Debug (debug)
+import Skald.Direction as Direction
 import Skald.History as History
 import Skald.History (History, HistoricalEntry)
 import Skald.Internal (Action)
@@ -122,8 +123,12 @@ go args = case args of
     "d" : Nil -> insteadGo "down"
     direction : Nil -> do
         world <- State.get
-        case Place.exitName direction (World.currentPlace world) of
-            Just newPlace -> enterPlace (World.place newPlace world)
+        case Direction.fromString direction of
+            Just direction' ->
+                case Place.exitName direction' (World.currentPlace world) of
+                    Just newPlace -> enterPlace (World.place newPlace world)
+                    Nothing -> sayError "You could not go that way."
+            -- TODO: this is impossible.
             Nothing -> sayError "You could not go that way."
     _ -> sayError "Go where?"
     where
@@ -229,7 +234,7 @@ listExits :: Place -> List HistoricalEntry
 listExits = map formatExit <<< Place.exitDirections
     where
         formatExit exit =
-            format ("From here you could see an exit to the " <> exit <> ".")
+            format ("From here you could see an exit to the " <> show exit <> ".")
 
 -- TODO: display proper article; punctuate list properly.
 listInventory :: World -> History

@@ -12,6 +12,8 @@ module Skald.Debug (
 import Prelude
 
 import Data.Array as Array
+import Data.Map as Map
+import Data.Map (Map)
 import Data.String as String
 import Data.StrMap as StrMap
 import Data.StrMap (StrMap)
@@ -46,3 +48,6 @@ instance debugFunction :: Debug (a -> b) where
 
 instance debugStrMap :: Debug a => Debug (StrMap a) where
     debug x = debug (Array.fromFoldable (StrMap.toList x))
+
+instance debugMap :: (Debug a, Debug b) => Debug (Map a b) where
+    debug x = debug (Array.fromFoldable (Map.toList x))
