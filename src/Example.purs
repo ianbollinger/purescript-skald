@@ -127,7 +127,7 @@ northernInnerWardCourtyard = place "northern inner ward courtyard"
         "Stairs spiraled around a seemingly bottomless hole in "
         <> (if unvisited x then "what must be " else "")
         <> "the inner ward of Akkonai."
-        <> (if unvisited x then " you exhaled—both relieved and fatigued."
+        <> (if unvisited x then " You exhaled—both relieved and fatigued."
             else "")
         <> " A tirùnga grew from the center of the ward, its roots hidden\
             \ beneath a blanket of fog. Stairs ran north to the keep."
