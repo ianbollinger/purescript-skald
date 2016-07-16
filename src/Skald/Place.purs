@@ -9,23 +9,35 @@
 module Skald.Place (
     -- TODO: don't export innards.
     module Skald.Internal,
-    toString,
+
+    -- * Construction
     place,
+    empty,
+
+    -- * Names and descriptions
     name,
     description,
+
+    -- * Exits
     exits,
     exitName,
     exitDirections,
+
+    -- * Visited
     visited,
     unvisited,
     setVisited,
+
+    -- * Objects
     objects,
     object,
     updateObjects,
     removeObject,
     addObject,
     objectNames,
-    empty
+
+    -- * Debugging
+    toString
     ) where
 
 import Prelude
@@ -40,17 +52,6 @@ import Skald.Object as Object
 import Skald.Object (Object)
 import Skald.Internal (Place (..), Exits (..), Objects (..))
 
--- TODO: fully implement.
--- | Create a string representation of the given place for debugging purposes.
-toString :: Place -> String
-toString place' =
-    "Place\n\
-    \            { name = \"" <> name place' <> "\"\n\
-    \            , description = \"" <> description place' <> "\"\n\
-    \            , exits = " <> show (exits place') <> "\n\
-    \            , objects = " <> "<???>" <> "\n\
-    \            }"
-
 -- | Creates a new place with the given name.
 place :: String -> Place
 place name' = Place {
@@ -61,6 +62,11 @@ place name' = Place {
     visited: false
     }
 
+-- | An empty place.
+empty :: Place
+-- TODO: make this impossible!
+empty = place "An error has occurred"
+
 -- | The name of the given place.
 name :: Place -> String
 name (Place place') = place'.name
@@ -68,16 +74,6 @@ name (Place place') = place'.name
 -- | The description of the given place.
 description :: Place -> String
 description (Place place') = place'.describer (Place place')
-
--- | The objects contained within the given place.
-objects :: Place -> Objects
-objects (Place place') = place'.objects
-
--- | The object contained within the given place with the given name, if it
--- exists.
-object :: String -> Place -> Maybe Object
-object name' (Place { objects: Objects objects' }) =
-    StrMap.lookup name' objects'
 
 -- | The exits leading out of the given place.
 exits :: Place -> Exits
@@ -104,6 +100,16 @@ unvisited (Place place') = not place'.visited
 setVisited :: Boolean -> Place -> Place
 setVisited visited' (Place place') = Place (place' { visited = visited' })
 
+-- | The objects contained within the given place.
+objects :: Place -> Objects
+objects (Place place') = place'.objects
+
+-- | The object contained within the given place with the given name, if it
+-- exists.
+object :: String -> Place -> Maybe Object
+object name' (Place { objects: Objects objects' }) =
+    StrMap.lookup name' objects'
+
 -- | Modify the given place's contained objects with the given function.
 updateObjects :: (Objects -> Objects) -> Place -> Place
 updateObjects f (Place place') = Place (place' { objects = f place'.objects })
@@ -125,7 +131,13 @@ objectNames :: Place -> List String
 objectNames (Place { objects: Objects objects' }) =
     List.fromFoldable (StrMap.keys objects')
 
--- | An empty place.
-empty :: Place
--- TODO: make this impossible!
-empty = place "An error has occurred"
+-- TODO: fully implement.
+-- | Create a string representation of the given place for debugging purposes.
+toString :: Place -> String
+toString place' =
+    "Place\n\
+    \            { name = \"" <> name place' <> "\"\n\
+    \            , description = \"" <> description place' <> "\"\n\
+    \            , exits = " <> show (exits place') <> "\n\
+    \            , objects = " <> "<???>" <> "\n\
+    \            }"
