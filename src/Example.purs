@@ -263,8 +263,8 @@ painting = scenery "painting"
 
 canvas :: Object
 canvas = object "canvas"
-    "The canvas had somehow survived the ravages of nature; you suspected \
-    \ alchemy. Written on the back of the canvas was “shúrâ kâmârât”. You had \
+    "The canvas had somehow survived the ravages of nature; you suspected\
+    \ alchemy. Written on the back of the canvas was “shúrâ kâmârât”. You had\
     \ no inkling as to what that meant."
 
 -- Section - The great hall ----------------------------------------------------
