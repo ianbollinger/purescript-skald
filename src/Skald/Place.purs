@@ -40,14 +40,6 @@ import Skald.Object as Object
 import Skald.Object (Object)
 import Skald.Internal (Place (..), Exits (..), Objects (..))
 
--- | An empty collection of exits.
-noExits :: Exits
-noExits = Exits (StrMap.empty)
-
--- | An empty collection of objects.
-noObjects :: Objects
-noObjects = Objects (StrMap.empty)
-
 -- TODO: fully implement.
 -- | Create a string representation of the given place for debugging purposes.
 toString :: Place -> String
@@ -64,8 +56,8 @@ place :: String -> Place
 place name' = Place {
     name: name',
     describer: const "",
-    exits: noExits,
-    objects: noObjects,
+    exits: Exits (StrMap.empty),
+    objects: Objects (StrMap.empty),
     visited: false
     }
 
@@ -84,8 +76,8 @@ objects (Place place') = place'.objects
 -- | The object contained within the given place with the given name, if it
 -- exists.
 object :: String -> Place -> Maybe Object
-object name' (Place place') = case place'.objects of
-    Objects objects' -> StrMap.lookup name' objects'
+object name' (Place { objects: Objects objects' }) =
+    StrMap.lookup name' objects'
 
 -- | The exits leading out of the given place.
 exits :: Place -> Exits
@@ -120,13 +112,13 @@ updateObjects f (Place place') = Place (place' { objects = f place'.objects })
 removeObject :: Object -> Place -> Place
 removeObject object' =
     updateObjects
-        (\(Objects x) -> Objects (StrMap.delete (Object.name object') x))
+        \(Objects x) -> Objects (StrMap.delete (Object.name object') x)
 
 -- | Add an object to the given place.
 addObject :: Object -> Place -> Place
 addObject object' =
     updateObjects
-        (\(Objects x) -> Objects (StrMap.insert (Object.name object') object' x))
+        \(Objects x) -> Objects (StrMap.insert (Object.name object') object' x)
 
 -- | The list of names of objects contained in the given place.
 objectNames :: Place -> List String
