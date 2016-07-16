@@ -97,6 +97,7 @@ renderHistoricalEntry entry =
            Echo string -> Tuple "echo" string
            Heading string -> Tuple "heading" string
            Error string -> Tuple "error" string
+           Debug string -> Tuple "debug" string
         attributes = [HP.class_ (HH.className (Tuple.fst classAndString))]
 
 -- | Submits the contents of the input field to the command parser.

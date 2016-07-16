@@ -34,10 +34,7 @@ module Skald.Place (
     updateObjects,
     removeObject,
     addObject,
-    objectNames,
-
-    -- * Debugging
-    toString
+    objectNames
     ) where
 
 import Prelude
@@ -130,14 +127,3 @@ addObject object' =
 objectNames :: Place -> List String
 objectNames (Place { objects: Objects objects' }) =
     List.fromFoldable (StrMap.keys objects')
-
--- TODO: fully implement.
--- | Create a string representation of the given place for debugging purposes.
-toString :: Place -> String
-toString place' =
-    "Place\n\
-    \            { name = \"" <> name place' <> "\"\n\
-    \            , description = \"" <> description place' <> "\"\n\
-    \            , exits = " <> show (exits place') <> "\n\
-    \            , objects = " <> "<???>" <> "\n\
-    \            }"

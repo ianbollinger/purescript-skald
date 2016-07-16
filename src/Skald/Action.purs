@@ -35,6 +35,7 @@ import Data.Monoid (mempty)
 
 import Skald.Command as Command
 import Skald.Command (Command, command)
+import Skald.Debug (debug)
 import Skald.History as History
 import Skald.History (History, HistoricalEntry)
 import Skald.Internal (Action)
@@ -55,15 +56,19 @@ defaultMap =
     $ Command.insert takingInventory takeInventory
     $ Command.insert dropping drop
     $ Command.insert waiting wait
-    $ Command.insert debugging debug Nil
+    $ Command.insert debugging debug' Nil
 
 debugging :: Command
-debugging = command "debug"
+debugging = command "debug(?: (.+))?"
 
-debug :: Command.Handler
-debug _ = do
+debug' :: Command.Handler
+debug' args = do
     world <- State.get
-    say (World.toString world)
+    case args of
+        arg : Nil ->
+            Writer.tell (History.singleton (History.debug (debug (World.place arg world :: Place))))
+        _ ->
+            Writer.tell (History.singleton (History.debug (debug (world :: World))))
 
 -- TODO: rename or move.
 emptyWorld :: World

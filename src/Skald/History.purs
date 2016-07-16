@@ -17,7 +17,8 @@ module Skald.History (
     message,
     echo,
     heading,
-    error
+    error,
+    debug
     ) where
 
 import Data.List (List (..), (:))
@@ -64,3 +65,9 @@ heading = Heading
 -- This is used when displaying error messages.
 error :: String -> HistoricalEntry
 error = Error
+
+-- | Create a new debugging historical entry.
+--
+-- This is used when displaying debug messages.
+debug :: String -> HistoricalEntry
+debug = Debug

@@ -6,7 +6,6 @@
 
 module Skald.World (
     module InternalExports,
-    toString,
     empty,
     places,
     setPlaces,
@@ -44,16 +43,6 @@ import Skald.Object as Object
 import Skald.Object (Object)
 import Skald.Place as Place
 import Skald.Place (Place)
-
--- TODO: finish implementing.
-toString :: World -> String
-toString world =
-    "    World\n\
-    \      { currentPlaceName = \"" <> Place.name (currentPlace world) <> "\"\n\
-    \      , places = " <> "<???>" <> "\n\
-    \      , commands = " <> "<???>" <> "\n\
-    \      , inventory = " <> "<???>" <> "\n\
-    \      }"
 
 -- | An empty world.
 empty :: World

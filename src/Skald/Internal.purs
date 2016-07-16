@@ -34,12 +34,23 @@ import Data.String.Regex (Regex)
 import Data.StrMap (StrMap)
 import Data.Tuple (Tuple)
 
+import Skald.Debug (class Debug, debug)
+
 data Object = Object {
     name :: String,
     description :: String,
     fixedInPlace :: Boolean,
     commands :: ObjectCommands
     }
+
+instance debugObject :: Debug Object where
+    debug (Object { name, description, fixedInPlace, commands }) =
+        "Object\n\
+        \    { name = " <> debug name <> "\n\
+        \    , description = " <> debug description <> "\n\
+        \    , fixedInPlace = " <> debug fixedInPlace <> "\n\
+        \    , commands = " <> "<?>" <> "\n\
+        \    }"
 
 -- TODO: Think of snappier name.
 -- TODO: wrap in newtype.
@@ -53,6 +64,13 @@ data Place = Place {
     visited :: Boolean
     }
 
+instance debugPlace :: Debug Place where
+    debug (Place { name, describer, exits, objects, visited }) =
+        "place " <> debug name <> "\n\
+        \    # withDescription " <> debug describer <> "\n\
+        \    # withExits " <> debug exits <> "\n\
+        \    # containing " <> debug objects <> "\n"
+
 newtype Exits = Exits (StrMap String)
 
 instance eqExits :: Eq Exits where
@@ -61,7 +79,13 @@ instance eqExits :: Eq Exits where
 instance showExits :: Show Exits where
     show (Exits a) = "Exits (" <> show a <> ")"
 
+instance debugExits :: Debug Exits where
+    debug (Exits a) = debug a
+
 newtype Objects = Objects (StrMap Object)
+
+instance debugObjects :: Debug Objects where
+    debug (Objects objects) = debug objects
 
 data World = World {
     currentPlaceName :: String,
@@ -69,6 +93,15 @@ data World = World {
     commands :: CommandMap,
     inventory :: Inventory
     }
+
+instance debugWorld :: Debug World where
+    debug (World { currentPlaceName, places, commands, inventory }) =
+        "World\n\
+        \    { currentPlaceName = " <> debug currentPlaceName <> "\n\
+        \    , places = " <> debug places <> "\n\
+        \    , commands = " <> "<???>" <> "\n\
+        \    , inventory = " <> "<???>" <> "\n\
+        \    }"
 
 data Command = Command String Regex
 
@@ -115,6 +148,7 @@ data HistoricalEntry
     | Echo String
     | Heading String
     | Error String
+    | Debug String
 
 derive instance genericHistoricalEntry :: Generic HistoricalEntry
 
