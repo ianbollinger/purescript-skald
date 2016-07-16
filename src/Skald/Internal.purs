@@ -115,14 +115,12 @@ instance ordCommand :: Ord Command where
 instance showCommand :: Show Command where
     show (Command a _) = "command " <> a
 
--- TODO: wrap in newtype.
 type CommandHandler = List String -> Action Unit
 
 -- TODO: wrap in newtype.
 type CommandMap = List (Tuple Command CommandHandler)
 
 -- TODO: wrap in newtype.
--- TODO: encapsulate World in Action.
 type Action a = WriterT History (State World) a
 
 newtype History = History (List HistoricalEntry)

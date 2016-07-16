@@ -62,7 +62,6 @@ place name' = Place {
 
 -- | An empty place.
 empty :: Place
--- TODO: make this impossible!
 empty = place "An error has occurred"
 
 -- | The name of the given place.

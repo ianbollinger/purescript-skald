@@ -16,6 +16,5 @@ import Control.Monad.Eff (Eff)
 
 foreign import data FOCUS :: !
 
--- TODO: we optimally should do this when the page first loads as well.
 -- | Sets focus to the input field.
 foreign import focus :: forall eff. Eff (focus :: FOCUS | eff) Unit
