@@ -55,8 +55,8 @@ place :: String -> Place
 place name' = Place {
     name: name',
     describer: const "",
-    exits: Exits (Map.empty),
-    objects: Objects (StrMap.empty),
+    exits: Exits Map.empty,
+    objects: Objects StrMap.empty,
     visited: false
     }
 
