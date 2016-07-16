@@ -76,15 +76,14 @@ currentPlace (World world) = place world.currentPlaceName (World world)
 -- | Sets the current place in the given world.
 setCurrentPlace :: Place -> World -> World
 setCurrentPlace place' (World world) =
-  World (world
-      -- TODO: is this really necessary?
-    { places = StrMap.insert (Place.name place') place' (places (World world))
-    , currentPlaceName = Place.name place'
-    })
+    World (world { places = places', currentPlaceName = Place.name place' })
+    where
+        -- TODO: is this really necessary?
+        places' =
+            StrMap.insert (Place.name place') place' (places (World world))
 
 updateCurrentPlace :: (Place -> Place) -> World -> World
-updateCurrentPlace f world =
-  setCurrentPlace (f (currentPlace world)) world
+updateCurrentPlace f world = setCurrentPlace (f (currentPlace world)) world
 
 -- | Removes the object from the current place.
 removeObject :: Object -> World -> World
@@ -121,12 +120,16 @@ inventoryIsEmpty (World { inventory: Inventory inventory' }) =
 -- | Adds an object to the player's inventory.
 addToInventory :: Object -> World -> World
 addToInventory object (World world@{ inventory: Inventory inventory' }) =
-    World (world { inventory = Inventory (StrMap.insert (Object.name object) object inventory') })
+    World (world { inventory = Inventory update })
+    where
+        update = StrMap.insert (Object.name object) object inventory'
 
 -- | Removes an object from the player's inventory.
 removeFromInventory :: Object -> World -> World
 removeFromInventory object (World world@{ inventory: Inventory inventory' }) =
-    World (world { inventory = Inventory (StrMap.delete (Object.name object) inventory') })
+    World (world { inventory = Inventory update })
+    where
+        update = StrMap.delete (Object.name object) inventory'
 
 inventoryNames :: World -> List String
 inventoryNames (World { inventory: Inventory inventory' }) =
