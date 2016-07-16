@@ -57,8 +57,7 @@ ui :: forall eff. Tale -> H.Component Model Query (Aff (Effects eff))
 ui tale = H.component { render, eval }
     where
         render :: Model -> H.ComponentHTML Query
-        -- TODO: use better tag than div_.
-        render model = HH.div_ ([heading] <> history <> [form])
+        render model = HH.main_ ([heading] <> history <> [form])
             where
                 heading = HH.h1_ [HH.text (Tale.title tale)]
                 history = renderHistory (Model.history model)
