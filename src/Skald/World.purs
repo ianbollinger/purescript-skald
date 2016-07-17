@@ -6,23 +6,35 @@
 
 module Skald.World (
     module InternalExports,
+
+    -- * Construction
     empty,
+
+    -- * Places
     places,
     setPlaces,
     updatePlaces,
     place,
+
+    -- * Current place
     currentPlace,
     setCurrentPlace,
     updateCurrentPlace,
+
+    -- * Objects
     removeObject,
     addObject,
+
+    -- * Commands
     commands,
     setCommands,
     updateCommands,
+
+    -- * Inventory
     inventory,
     item,
     updateInventory,
-    -- TODO: export.
+    -- TODO: re-export from Skald.
     inventoryIsEmpty,
     addToInventory,
     removeFromInventory,
@@ -102,35 +114,42 @@ setCommands newCommands (World world) = World (world { commands = newCommands })
 updateCommands :: (CommandMap -> CommandMap) -> World -> World
 updateCommands f (World world) = World (world { commands = f world.commands })
 
+-- | The player inventory for the given world.
 inventory :: World -> Inventory
 inventory (World world) = world.inventory
 
+-- | The object contained within the given world's player inventory with the
+-- given name, if it exists.
 item :: String -> World -> Maybe Object
 item name (World { inventory: Inventory inventory' }) =
     StrMap.lookup name inventory'
 
+-- | Applies a function over the given world's player inventory.
 updateInventory :: (Inventory -> Inventory) -> World -> World
 updateInventory f (World world) =
     World (world { inventory = f world.inventory })
 
+-- | Whether the given world's player inventory is empty.
 inventoryIsEmpty :: World -> Boolean
 inventoryIsEmpty (World { inventory: Inventory inventory' }) =
     StrMap.isEmpty inventory'
 
--- | Adds an object to the player's inventory.
+-- | Adds an object to the given world's player inventory.
 addToInventory :: Object -> World -> World
 addToInventory object (World world@{ inventory: Inventory inventory' }) =
     World (world { inventory = Inventory update })
     where
         update = StrMap.insert (Object.name object) object inventory'
 
--- | Removes an object from the player's inventory.
+-- | Removes an object from the given world's player inventory.
 removeFromInventory :: Object -> World -> World
 removeFromInventory object (World world@{ inventory: Inventory inventory' }) =
     World (world { inventory = Inventory update })
     where
         update = StrMap.delete (Object.name object) inventory'
 
+-- | The list of names of objects contained in the given world's player
+-- inventory.
 inventoryNames :: World -> List String
 inventoryNames (World { inventory: Inventory inventory' }) =
     List.fromFoldable (StrMap.keys inventory')
