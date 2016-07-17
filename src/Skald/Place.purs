@@ -46,9 +46,9 @@ import Data.Maybe (Maybe)
 import Data.StrMap as StrMap
 
 import Skald.Direction (Direction)
+import Skald.Internal (Place (..), Exits (..), Objects (..))
 import Skald.Object as Object
 import Skald.Object (Object)
-import Skald.Internal (Place (..), Exits (..), Objects (..))
 
 -- | Creates a new place with the given name.
 place :: String -> Place
