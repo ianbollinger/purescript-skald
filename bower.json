@@ -1,16 +1,28 @@
 {
-  "name": "calamity",
-  "description": "An interactive fiction.",
-  "keywords": [
-    "purescript"
-  ],
+  "name": "purescript-skald",
+  "description": "A library for writing interactive fiction in PureScript.",
+  "license": "MIT",
   "ignore": [
     "**/.*",
     "bower_components",
     "node_modules",
     "output",
-    "tests"
+    "test"
   ],
+  "keywords": [
+    "purescript",
+    "game",
+    "interactive fiction",
+    "text adventure"
+  ],
+  "authors": [
+    "Ian D. Bollinger <ian.bollinger@gmail.com> (https://github.com/ianbollinger)"
+  ],
+  "homepage": "https://github.com/ianbollinger/purescript-skald",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ianbollinger/purescript-skald"
+  },
   "dependencies": {
     "purescript-aff": "^1.0.0",
     "purescript-aff-free": "^1.0.0",
@@ -25,6 +37,7 @@
     "purescript-monoid": "^1.0.0",
     "purescript-strings": "^1.0.0",
     "purescript-transformers": "^1.0.0",
-    "purescript-tuples": "^1.0.0"
+    "purescript-tuples": "^1.0.0",
+    "virtual-dom": "^2.1.1"
   }
 }
