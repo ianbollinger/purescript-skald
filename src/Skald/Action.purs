@@ -94,7 +94,7 @@ searching :: Command
 searching = command "search(?: (.+))?"
 
 search :: Command.Handler
-search args = case args of
+search = case _ of
     Nil -> do
         world <- State.get
         let formatObject names = "You found " <> list names <> " here."
@@ -110,7 +110,7 @@ going = command "(north(?:east|west)?|east|south(?:east|west)?|west|up|down|[ne\
     \swud]|ne|nw|se|sw)|go(?: to)?(?: (.+))?"
 
 go :: Command.Handler
-go args = case args of
+go = case _ of
     "n" : Nil -> insteadGo "north"
     "ne" : Nil -> insteadGo "northeast"
     "e" : Nil -> insteadGo "east"
@@ -138,7 +138,7 @@ taking :: Command
 taking = command "(?:take|get)(?: (.+))?"
 
 take :: Command.Handler
-take args = case args of
+take = case _ of
     name : Nil -> do
         world <- State.get
         case Place.object name (World.currentPlace world) of
@@ -155,7 +155,7 @@ dropping :: Command
 dropping = command "drop(?: (.+))?"
 
 drop :: Command.Handler
-drop args = case args of
+drop = case _ of
     name : Nil -> do
         world <- State.get
         case World.item name world of
@@ -243,7 +243,7 @@ listInventory = History.fromList <<< map (\x -> format ("* a " <> x)) <<< World.
 -- html ------------------------------------------------------------------------
 
 list :: List String -> String
-list z = case z of
+list = case _ of
     Nil -> ""
     x : Nil -> x
     x : y : Nil -> x <> ", and " <> y

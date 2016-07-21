@@ -94,7 +94,7 @@ normalizeWhitespace = Regex.replace whitespaceRegex " "
 
 -- TODO: move.
 catMaybes :: forall a. List (Maybe a) -> List a
-catMaybes a = case a of
+catMaybes = case _ of
     Nil -> Nil
     Nothing : xs -> catMaybes xs
     Just x : xs -> x : catMaybes xs
