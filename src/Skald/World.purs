@@ -56,12 +56,12 @@ import Skald.Place (Place)
 
 -- | An empty world.
 empty :: World
-empty = World {
-    currentPlaceName: "",
-    places: StrMap.empty,
-    commands: Nil,
-    inventory: Inventory StrMap.empty
-    }
+empty = World
+  { currentPlaceName: ""
+  , places: StrMap.empty
+  , commands: Nil
+  , inventory: Inventory StrMap.empty
+  }
 
 -- | The places contained in the given world.
 places :: World -> StrMap Place
@@ -77,8 +77,8 @@ updatePlaces f (World world) = World (world { places = f world.places })
 
 place :: String -> World -> Place
 place name world = case StrMap.lookup name (places world) of
-    Just place' -> place'
-    Nothing -> Place.empty
+  Just place' -> place'
+  Nothing -> Place.empty
 
 currentPlace :: World -> Place
 currentPlace (World world) = place world.currentPlaceName (World world)
@@ -86,11 +86,11 @@ currentPlace (World world) = place world.currentPlaceName (World world)
 -- | Sets the current place in the given world.
 setCurrentPlace :: Place -> World -> World
 setCurrentPlace place' (World world) =
-    World (world { places = places', currentPlaceName = Place.name place' })
-    where
-        -- TODO: is this really necessary?
-        places' =
-            StrMap.insert (Place.name place') place' (places (World world))
+  World (world { places = places', currentPlaceName = Place.name place' })
+  where
+    -- TODO: is this really necessary?
+    places' =
+      StrMap.insert (Place.name place') place' (places (World world))
 
 updateCurrentPlace :: (Place -> Place) -> World -> World
 updateCurrentPlace f world = setCurrentPlace (f (currentPlace world)) world
@@ -120,34 +120,34 @@ inventory (World world) = world.inventory
 -- given name, if it exists.
 item :: String -> World -> Maybe Object
 item name (World { inventory: Inventory inventory' }) =
-    StrMap.lookup name inventory'
+  StrMap.lookup name inventory'
 
 -- | Applies a function over the given world's player inventory.
 updateInventory :: (Inventory -> Inventory) -> World -> World
 updateInventory f (World world) =
-    World (world { inventory = f world.inventory })
+  World (world { inventory = f world.inventory })
 
 -- | Whether the given world's player inventory is empty.
 inventoryIsEmpty :: World -> Boolean
 inventoryIsEmpty (World { inventory: Inventory inventory' }) =
-    StrMap.isEmpty inventory'
+  StrMap.isEmpty inventory'
 
 -- | Adds an object to the given world's player inventory.
 addToInventory :: Object -> World -> World
 addToInventory object (World world@{ inventory: Inventory inventory' }) =
-    World (world { inventory = Inventory update })
-    where
-        update = StrMap.insert (Object.name object) object inventory'
+  World (world { inventory = Inventory update })
+  where
+    update = StrMap.insert (Object.name object) object inventory'
 
 -- | Removes an object from the given world's player inventory.
 removeFromInventory :: Object -> World -> World
 removeFromInventory object (World world@{ inventory: Inventory inventory' }) =
-    World (world { inventory = Inventory update })
-    where
-        update = StrMap.delete (Object.name object) inventory'
+  World (world { inventory = Inventory update })
+  where
+    update = StrMap.delete (Object.name object) inventory'
 
 -- | The list of names of objects contained in the given world's player
 -- inventory.
 inventoryNames :: World -> List String
 inventoryNames (World { inventory: Inventory inventory' }) =
-    List.fromFoldable (StrMap.keys inventory')
+  List.fromFoldable (StrMap.keys inventory')

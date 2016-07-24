@@ -16,7 +16,6 @@ module Skald.Object
   ) where
 
 import Prelude
-
 import Data.Map as Map
 import Data.Maybe (Maybe)
 import Skald.Internal (Object) as InternalExports
@@ -24,21 +23,21 @@ import Skald.Internal (Action, Command, Object(..))
 
 -- | Creates a new object with the given name and description.
 object :: String -> String -> Object
-object name' description' = Object {
-    name: name',
-    description: description',
-    fixedInPlace: false,
-    commands: Map.empty
-    }
+object name' description' = Object
+  { name: name'
+  , description: description'
+  , fixedInPlace: false
+  , commands: Map.empty
+  }
 
 -- | Creates a new scenery object with the given name and description.
 scenery :: String -> String -> Object
-scenery name' description' = Object {
-    name: name',
-    description: description',
-    fixedInPlace: true,
-    commands: Map.empty
-    }
+scenery name' description' = Object
+  { name: name'
+  , description: description'
+  , fixedInPlace: true
+  , commands: Map.empty
+  }
 
 -- | The name of the given object.
 name :: Object -> String
@@ -57,8 +56,8 @@ fixedInPlace (Object object') = object'.fixedInPlace
 -- TODO: add other combinators, i.e. before, after, etc.
 insteadOf :: Command -> Action Unit -> Object -> Object
 insteadOf command' action (Object object'@{ commands: commands' }) =
-    Object (object' { commands = Map.insert command' action commands' })
+  Object (object' { commands = Map.insert command' action commands' })
 
 command :: Command -> Object -> Maybe (Action Unit)
 command command' (Object { commands: commands' }) =
-    Map.lookup command' commands'
+  Map.lookup command' commands'

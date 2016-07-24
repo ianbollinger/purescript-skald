@@ -31,7 +31,7 @@ cons entry (History history) = History (entry : history)
 
 -- | Create a new history from a historical entry list.
 fromList :: List HistoricalEntry -> History
-fromList list = History list
+fromList = History
 
 -- | Create a historical entry list from the given history.
 toList :: History -> List HistoricalEntry

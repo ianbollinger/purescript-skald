@@ -53,27 +53,27 @@ import Skald.World (World)
 
 defaultMap :: Command.Map
 defaultMap =
-  -- TODO: split up look and look [object].
-    Command.insert looking look
-    $ Command.insert searching search
-    $ Command.insert going go
-    $ Command.insert taking take
-    $ Command.insert takingInventory takeInventory
-    $ Command.insert dropping drop
-    $ Command.insert waiting wait
-    $ Command.insert debugging debug' Nil
+-- TODO: split up look and look [object].
+  Command.insert looking look
+  $ Command.insert searching search
+  $ Command.insert going go
+  $ Command.insert taking take
+  $ Command.insert takingInventory takeInventory
+  $ Command.insert dropping drop
+  $ Command.insert waiting wait
+  $ Command.insert debugging debug' Nil
 
 debugging :: Command
 debugging = command "debug(?: (.+))?"
 
 debug' :: Command.Handler
 debug' args = do
-    world <- State.get
-    case args of
-        arg : Nil ->
-            Writer.tell (History.singleton (History.debug (debug (World.place arg world :: Place))))
-        _ ->
-            Writer.tell (History.singleton (History.debug (debug (world :: World))))
+  world <- State.get
+  case args of
+    arg : Nil ->
+      Writer.tell (History.singleton (History.debug (debug (World.place arg world :: Place))))
+    _ ->
+      Writer.tell (History.singleton (History.debug (debug (world :: World))))
 
 -- TODO: rename or move.
 emptyWorld :: World
@@ -84,26 +84,26 @@ looking = command "(?:describe|examine|look(?: at)?|l|x|check|watch)(?: (.+))?"
 
 look :: Command.Handler
 look args = do
-    world <- State.get
-    let currentPlace = World.currentPlace world
-    case args of
-        Nil -> describePlace currentPlace
-        name : _ -> case Place.object name currentPlace of
-            Just found -> describeObject found
-            Nothing -> case World.item name world of
-                Just found -> describeObject found
-                Nothing -> sayError "You could not see such a thing."
+  world <- State.get
+  let currentPlace = World.currentPlace world
+  case args of
+    Nil -> describePlace currentPlace
+    name : _ -> case Place.object name currentPlace of
+      Just found -> describeObject found
+      Nothing -> case World.item name world of
+        Just found -> describeObject found
+        Nothing -> sayError "You could not see such a thing."
 
 searching :: Command
 searching = command "search(?: (.+))?"
 
 search :: Command.Handler
 search = case _ of
-    Nil -> do
-        world <- State.get
-        let formatObject names = "You found " <> list names <> " here."
-        say (formatObject (Place.objectNames (World.currentPlace world)))
-    _ -> say "You found nothing."
+  Nil -> do
+    world <- State.get
+    let formatObject names = "You found " <> list names <> " here."
+    say (formatObject (Place.objectNames (World.currentPlace world)))
+  _ -> say "You found nothing."
 
 -- | Writes the object's description to the history.
 describeObject :: Object -> Action Unit
@@ -111,75 +111,75 @@ describeObject = say <<< Object.description
 
 going :: Command
 going = command "(north(?:east|west)?|east|south(?:east|west)?|west|up|down|[ne\
-    \swud]|ne|nw|se|sw)|go(?: to)?(?: (.+))?"
+  \swud]|ne|nw|se|sw)|go(?: to)?(?: (.+))?"
 
 go :: Command.Handler
 go = case _ of
-    "n" : Nil -> insteadGo "north"
-    "ne" : Nil -> insteadGo "northeast"
-    "e" : Nil -> insteadGo "east"
-    "se" : Nil -> insteadGo "southeast"
-    "s" : Nil -> insteadGo "south"
-    "sw" : Nil -> insteadGo "southwest"
-    "w" : Nil -> insteadGo "west"
-    "nw" : Nil -> insteadGo "northwest"
-    "u" : Nil -> insteadGo "up"
-    "d" : Nil -> insteadGo "down"
-    direction : Nil -> do
-        world <- State.get
-        case Direction.fromString direction of
-            Just direction' ->
-                case Place.exitName direction' (World.currentPlace world) of
-                    Just newPlace -> enterPlace (World.place newPlace world)
-                    Nothing -> sayError "You could not go that way."
-            -- TODO: this is impossible.
-            Nothing -> sayError "You could not go that way."
-    _ -> sayError "Go where?"
-    where
-        insteadGo direction = go (direction : Nil)
+  "n" : Nil -> insteadGo "north"
+  "ne" : Nil -> insteadGo "northeast"
+  "e" : Nil -> insteadGo "east"
+  "se" : Nil -> insteadGo "southeast"
+  "s" : Nil -> insteadGo "south"
+  "sw" : Nil -> insteadGo "southwest"
+  "w" : Nil -> insteadGo "west"
+  "nw" : Nil -> insteadGo "northwest"
+  "u" : Nil -> insteadGo "up"
+  "d" : Nil -> insteadGo "down"
+  direction : Nil -> do
+    world <- State.get
+    case Direction.fromString direction of
+      Just direction' ->
+        case Place.exitName direction' (World.currentPlace world) of
+          Just newPlace -> enterPlace (World.place newPlace world)
+          Nothing -> sayError "You could not go that way."
+      -- TODO: this is impossible.
+      Nothing -> sayError "You could not go that way."
+  _ -> sayError "Go where?"
+  where
+    insteadGo direction = go (direction : Nil)
 
 taking :: Command
 taking = command "(?:take|get)(?: (.+))?"
 
 take :: Command.Handler
 take = case _ of
-    name : Nil -> do
-        world <- State.get
-        case Place.object name (World.currentPlace world) of
-            Just found -> if Object.fixedInPlace found
-                then sayError "You could not take that."
-                else do
-                    addToInventory found
-                    destroyObject found
-                    say ("You take the " <> name <> ".")
-            Nothing -> sayError "You could not see such a thing."
-    _ -> sayError "Take what?"
+  name : Nil -> do
+    world <- State.get
+    case Place.object name (World.currentPlace world) of
+      Just found -> if Object.fixedInPlace found
+        then sayError "You could not take that."
+        else do
+          addToInventory found
+          destroyObject found
+          say ("You take the " <> name <> ".")
+      Nothing -> sayError "You could not see such a thing."
+  _ -> sayError "Take what?"
 
 dropping :: Command
 dropping = command "drop(?: (.+))?"
 
 drop :: Command.Handler
 drop = case _ of
-    name : Nil -> do
-        world <- State.get
-        case World.item name world of
-            Just found -> do
-                removeFromInventory found
-                createObject found
-                say ("You drop the " <> name <> ".")
-            Nothing -> sayError "You did not have such a thing."
-    _ -> sayError "Drop what?"
+  name : Nil -> do
+    world <- State.get
+    case World.item name world of
+      Just found -> do
+        removeFromInventory found
+        createObject found
+        say ("You drop the " <> name <> ".")
+      Nothing -> sayError "You did not have such a thing."
+  _ -> sayError "Drop what?"
 
 takingInventory :: Command
 takingInventory = command "(?:take )?inventory|i|inv"
 
 takeInventory :: Command.Handler
 takeInventory _ = do
-    world <- State.get
-    let message = if World.inventoryIsEmpty world
-            then format "You had nothing."
-            else format "You had:"
-    Writer.tell (History.cons message (listInventory world))
+  world <- State.get
+  let message = if World.inventoryIsEmpty world
+        then format "You had nothing."
+        else format "You had:"
+  Writer.tell (History.cons message (listInventory world))
 
 waiting :: Command
 waiting = command "wait|z"
@@ -218,9 +218,9 @@ sayError = Writer.tell <<< History.singleton <<< formatError
 
 enterPlace :: Place -> Action Unit
 enterPlace place = do
-    setCurrentPlace place
-    describePlace place
-    setCurrentPlace (Place.setVisited true place)
+  setCurrentPlace place
+  describePlace place
+  setCurrentPlace (Place.setVisited true place)
 
 setCurrentPlace :: Place -> Action Unit
 setCurrentPlace = State.modify <<< World.setCurrentPlace
@@ -228,17 +228,17 @@ setCurrentPlace = State.modify <<< World.setCurrentPlace
 -- | Writes the place's name and description to the history.
 describePlace :: Place -> Action Unit
 describePlace place = Writer.tell html
-   where
-      html = heading (Place.name place)
-          `History.cons` (format (Place.description place)
-          `History.cons` mempty)
+  where
+    html = heading (Place.name place)
+      `History.cons` (format (Place.description place)
+      `History.cons` mempty)
 
 -- TODO: use.
 listExits :: Place -> List HistoricalEntry
 listExits = map formatExit <<< Place.exitDirections
-    where
-        formatExit exit =
-            format ("From here you could see an exit to the " <> show exit <> ".")
+  where
+    formatExit exit =
+      format ("From here you could see an exit to the " <> show exit <> ".")
 
 -- TODO: display proper article; punctuate list properly.
 listInventory :: World -> History
@@ -248,10 +248,10 @@ listInventory = History.fromList <<< map (\x -> format ("* a " <> x)) <<< World.
 
 list :: List String -> String
 list = case _ of
-    Nil -> ""
-    x : Nil -> x
-    x : y : Nil -> x <> ", and " <> y
-    x : xs -> x <> ", " <> list xs
+  Nil -> ""
+  x : Nil -> x
+  x : y : Nil -> x <> ", and " <> y
+  x : xs -> x <> ", " <> list xs
 
 format :: String -> HistoricalEntry
 format = History.message

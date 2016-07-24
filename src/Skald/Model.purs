@@ -23,19 +23,19 @@ import Skald.History (History)
 import Skald.World (World)
 
 -- | Contains the entirety of a Skald application's state.
-data Model = Model {
-    history :: History,
-    world :: World,
-    inputField :: String
-    }
+data Model = Model
+  { history :: History
+  , world :: World
+  , inputField :: String
+  }
 
 -- | An empty model.
 empty :: Model
-empty = Model {
-    history: mempty,
-    world: Action.emptyWorld,
-    inputField: ""
-    }
+empty = Model
+  { history: mempty
+  , world: Action.emptyWorld
+  , inputField: ""
+  }
 
 -- | The given model's history.
 history :: Model -> History
@@ -48,7 +48,7 @@ setHistory newHistory (Model model) = Model (model { history = newHistory })
 -- | Append the given entries to the model's history.
 appendHistory :: History -> Model -> Model
 appendHistory entries (Model model) =
-    Model (model { history = model.history <> entries })
+  Model (model { history = model.history <> entries })
 
 -- | The world contained in the given model.
 world :: Model -> World
@@ -65,4 +65,4 @@ inputField (Model model) = model.inputField
 -- | Set the contents of the input field for the given model.
 setInputField :: String -> Model -> Model
 setInputField newInputField (Model model) =
-    Model (model { inputField = newInputField })
+  Model (model { inputField = newInputField })

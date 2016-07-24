@@ -50,13 +50,13 @@ import Skald.Object (Object)
 
 -- | Creates a new place with the given name.
 place :: String -> Place
-place name' = Place {
-    name: name',
-    describer: const "",
-    exits: Exits Map.empty,
-    objects: Objects StrMap.empty,
-    visited: false
-    }
+place name' = Place
+  { name: name'
+  , describer: const ""
+  , exits: Exits Map.empty
+  , objects: Objects StrMap.empty
+  , visited: false
+  }
 
 -- | An empty place.
 empty :: Place
@@ -103,7 +103,7 @@ objects (Place place') = place'.objects
 -- exists.
 object :: String -> Place -> Maybe Object
 object name' (Place { objects: Objects objects' }) =
-    StrMap.lookup name' objects'
+  StrMap.lookup name' objects'
 
 -- | Modify the given place's contained objects with the given function.
 updateObjects :: (Objects -> Objects) -> Place -> Place
@@ -112,16 +112,16 @@ updateObjects f (Place place') = Place (place' { objects = f place'.objects })
 -- | Remove an object from the given place.
 removeObject :: Object -> Place -> Place
 removeObject object' =
-    updateObjects
-        \(Objects x) -> Objects (StrMap.delete (Object.name object') x)
+  updateObjects
+    \(Objects x) -> Objects (StrMap.delete (Object.name object') x)
 
 -- | Add an object to the given place.
 addObject :: Object -> Place -> Place
 addObject object' =
-    updateObjects
-        \(Objects x) -> Objects (StrMap.insert (Object.name object') object' x)
+  updateObjects
+    \(Objects x) -> Objects (StrMap.insert (Object.name object') object' x)
 
 -- | The list of names of objects contained in the given place.
 objectNames :: Place -> List String
 objectNames (Place { objects: Objects objects' }) =
-    List.fromFoldable (StrMap.keys objects')
+  List.fromFoldable (StrMap.keys objects')

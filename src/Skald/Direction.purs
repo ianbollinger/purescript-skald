@@ -29,70 +29,70 @@ import Data.Maybe (Maybe(..))
 import Skald.Debug (class Debug)
 
 data Direction
-    = North
-    | Northeast
-    | East
-    | Southeast
-    | South
-    | Southwest
-    | West
-    | Northwest
-    | Up
-    | Down
+  = North
+  | Northeast
+  | East
+  | Southeast
+  | South
+  | Southwest
+  | West
+  | Northwest
+  | Up
+  | Down
 
 derive instance genericDirection :: Generic Direction
 
 instance eqDirection :: Eq Direction where
-    eq = gEq
+  eq = gEq
 
 instance ordDirection :: Ord Direction where
-    compare = gCompare
+  compare = gCompare
 
 instance showDirection :: Show Direction where
-    show direction = case direction of
-        North -> "north"
-        Northeast -> "northeast"
-        East -> "east"
-        Southeast -> "southeast"
-        South -> "south"
-        Southwest -> "southwest"
-        West -> "west"
-        Northwest -> "northwest"
-        Up -> "up"
-        Down -> "down"
+  show = case _ of
+    North -> "north"
+    Northeast -> "northeast"
+    East -> "east"
+    Southeast -> "southeast"
+    South -> "south"
+    Southwest -> "southwest"
+    West -> "west"
+    Northwest -> "northwest"
+    Up -> "up"
+    Down -> "down"
 
 instance debugDirection :: Debug Direction where
-    debug = show
+  debug = show
 
 -- | The corresponding direction for the given string, if the string is the name
 -- of a lower case cardinal direction.
 fromString :: String -> Maybe Direction
-fromString string = case string of
-    "north" -> Just North
-    "northeast" -> Just Northeast
-    "east" -> Just East
-    "southeast" -> Just Southeast
-    "south" -> Just South
-    "southwest" -> Just Southwest
-    "west" -> Just West
-    "northwest" -> Just Northwest
-    "up" -> Just Up
-    "down" -> Just Down
-    _ -> Nothing
+fromString = case _ of
+  "north" -> Just North
+  "northeast" -> Just Northeast
+  "east" -> Just East
+  "southeast" -> Just Southeast
+  "south" -> Just South
+  "southwest" -> Just Southwest
+  "west" -> Just West
+  "northwest" -> Just Northwest
+  "up" -> Just Up
+  "down" -> Just Down
+  _ -> Nothing
 
 -- | The direction opposite the given direction.
 opposite :: Direction -> Direction
-opposite direction = case direction of
-    North -> South
-    Northeast -> Southwest
-    East -> West
-    Southeast -> Northwest
-    South -> North
-    Southwest -> Northeast
-    West -> East
-    Northwest -> Southeast
-    Up -> Down
-    Down -> Up
+opposite = case _ of
+  North -> South
+  Northeast -> Southwest
+  East -> West
+  Southeast -> Northwest
+  South -> North
+  Southwest -> Northeast
+  West -> East
+  Northwest -> Southeast
+  Up -> Down
+  Down -> Up
 
 -- | The direction north.
 north :: Direction
