@@ -5,22 +5,22 @@
 -- or distributed except according to those terms.
 
 -- | Defines mutally-recursively data types.
-module Skald.Internal (
-    Object (..),
-    ObjectCommands,
-    Place (..),
-    Exits (..),
-    Objects (..),
-    World (..),
-    Command (..),
-    CommandHandler,
-    CommandMap,
-    Action,
-    Places (..),
-    Inventory (..),
-    History (..),
-    HistoricalEntry (..)
-    ) where
+module Skald.Internal
+  ( Object(..)
+  , ObjectCommands
+  , Place(..)
+  , Exits(..)
+  , Objects(..)
+  , World(..)
+  , Command(..)
+  , CommandHandler
+  , CommandMap
+  , Action
+  , Places(..)
+  , Inventory(..)
+  , History(..)
+  , HistoricalEntry(..)
+  ) where
 
 import Prelude
 
@@ -33,87 +33,86 @@ import Data.Monoid (class Monoid)
 import Data.String.Regex (Regex)
 import Data.StrMap (StrMap)
 import Data.Tuple (Tuple)
-
 import Skald.Debug (class Debug, debug)
 import Skald.Direction (Direction)
 
-data Object = Object {
-    name :: String,
-    description :: String,
-    fixedInPlace :: Boolean,
-    commands :: ObjectCommands
-    }
+data Object = Object
+  { name :: String
+  , description :: String
+  , fixedInPlace :: Boolean
+  , commands :: ObjectCommands
+  }
 
 instance debugObject :: Debug Object where
-    debug (Object { name, description, fixedInPlace, commands }) =
-        "Object\n\
-        \    { name = " <> debug name <> "\n\
-        \    , description = " <> debug description <> "\n\
-        \    , fixedInPlace = " <> debug fixedInPlace <> "\n\
-        \    , commands = " <> "<?>" <> "\n\
-        \    }"
+  debug (Object { name, description, fixedInPlace, commands }) =
+    "Object\n\
+    \  { name = " <> debug name <> "\n\
+    \  , description = " <> debug description <> "\n\
+    \  , fixedInPlace = " <> debug fixedInPlace <> "\n\
+    \  , commands = " <> "<?>" <> "\n\
+    \  }"
 
 -- TODO: Think of snappier name.
 -- TODO: wrap in newtype.
 type ObjectCommands = Map Command (Action Unit)
 
-data Place = Place {
-    name :: String,
-    describer :: Place -> String,
-    exits :: Exits,
-    objects :: Objects,
-    visited :: Boolean
-    }
+data Place = Place
+  { name :: String
+  , describer :: Place -> String
+  , exits :: Exits
+  , objects :: Objects
+  , visited :: Boolean
+  }
 
 instance debugPlace :: Debug Place where
-    debug (Place { name, describer, exits, objects, visited }) =
-        "place " <> debug name <> "\n\
-        \    # withDescription " <> debug describer <> "\n\
-        \    # withExits " <> debug exits <> "\n\
-        \    # containing " <> debug objects <> "\n"
+  debug (Place { name, describer, exits, objects, visited }) =
+    "place " <> debug name <> "\n\
+    \  # withDescription " <> debug describer <> "\n\
+    \  # withExits " <> debug exits <> "\n\
+    \  # containing " <> debug objects <> "\n"
 
 newtype Exits = Exits (Map Direction String)
 
 instance eqExits :: Eq Exits where
-    eq (Exits a) (Exits b) = eq a b
+  eq (Exits a) (Exits b) = eq a b
 
 instance showExits :: Show Exits where
-    show (Exits a) = "Exits (" <> show a <> ")"
+  show (Exits a) = "Exits (" <> show a <> ")"
 
 instance debugExits :: Debug Exits where
-    debug (Exits a) = debug a
+  debug (Exits a) = debug a
 
 newtype Objects = Objects (StrMap Object)
 
 instance debugObjects :: Debug Objects where
-    debug (Objects objects) = debug objects
+  debug (Objects objects) = debug objects
 
-data World = World {
-    currentPlaceName :: String,
-    places :: Places,
-    commands :: CommandMap,
-    inventory :: Inventory
-    }
+data World = World
+  { currentPlaceName :: String
+  , places :: Places
+  , commands :: CommandMap
+  , inventory :: Inventory
+  }
 
 instance debugWorld :: Debug World where
-    debug (World { currentPlaceName, places, commands, inventory }) =
-        "World\n\
-        \    { currentPlaceName = " <> debug currentPlaceName <> "\n\
-        \    , places = " <> debug places <> "\n\
-        \    , commands = " <> "<???>" <> "\n\
-        \    , inventory = " <> "<???>" <> "\n\
-        \    }"
+  debug (World { currentPlaceName, places, commands, inventory }) =
+    "World\n\
+    \  { currentPlaceName = " <> debug currentPlaceName <> "\n\
+    \  , places = " <> debug places <> "\n\
+    \  , commands = " <> "<???>" <> "\n\
+    \  , inventory = " <> "<???>" <> "\n\
+    \  }"
 
 data Command = Command String Regex
 
 instance eqCommand :: Eq Command where
-    eq (Command a _) (Command b _) = eq a b
+  eq (Command a _) (Command b _) = eq a b
 
 instance ordCommand :: Ord Command where
-    compare (Command a _) (Command b _) = compare a b
+  compare (Command a _) (Command b _) = compare a b
 
 instance showCommand :: Show Command where
-    show (Command a _) = "command " <> a
+  show (Command a _) = "command " <> a
 
 type CommandHandler = List String -> Action Unit
 
@@ -128,37 +127,37 @@ newtype History = History (List HistoricalEntry)
 derive instance genericHistory :: Generic History
 
 instance eqHistory :: Eq History where
-    eq = gEq
+  eq = gEq
 
 instance ordHistory :: Ord History where
-    compare = gCompare
+  compare = gCompare
 
 instance monoidHistory :: Monoid History where
-    mempty = History Nil
+  mempty = History Nil
 
 instance semigroupHistory :: Semigroup History where
-    append (History a) (History b) = History (a <> b)
+  append (History a) (History b) = History (a <> b)
 
 instance showHistory :: Show History where
-    show = gShow
+  show = gShow
 
 data HistoricalEntry
-    = Message String
-    | Echo String
-    | Heading String
-    | Error String
-    | Debug String
+  = Message String
+  | Echo String
+  | Heading String
+  | Error String
+  | Debug String
 
 derive instance genericHistoricalEntry :: Generic HistoricalEntry
 
 instance eqHistoricalEntry :: Eq HistoricalEntry where
-    eq = gEq
+  eq = gEq
 
 instance ordHistoricalEntry:: Ord HistoricalEntry where
-    compare = gCompare
+  compare = gCompare
 
 instance showHistoricalEntry :: Show HistoricalEntry where
-    show = gShow
+  show = gShow
 
 -- TODO: wrap in newtype.
 type Places = StrMap Place

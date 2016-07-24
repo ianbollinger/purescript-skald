@@ -6,59 +6,57 @@
 
 -- | Places are discrete areas of the world containing objects the player can
 -- directly interact with.
-module Skald.Place (
-    -- TODO: don't export innards.
-    module Skald.Internal,
+module Skald.Place
+  ( -- TODO: don't export innards.
+    module Skald.Internal
 
-    -- * Construction
-    place,
-    empty,
+  -- * Construction
+  , place
+  , empty
 
-    -- * Names and descriptions
-    name,
-    description,
+  -- * Names and descriptions
+  , name
+  , description
 
-    -- * Exits
-    exits,
-    exitName,
-    exitDirections,
+  -- * Exits
+  , exits
+  , exitName
+  , exitDirections
 
-    -- * Visited
-    visited,
-    unvisited,
-    setVisited,
+  -- * Visited
+  , visited
+  , unvisited
+  , setVisited
 
-    -- * Objects
-    objects,
-    object,
-    updateObjects,
-    removeObject,
-    addObject,
-    objectNames
-    ) where
+  -- * Objects
+  , objects
+  , object
+  , updateObjects
+  , removeObject
+  , addObject
+  , objectNames
+  ) where
 
 import Prelude
-
 import Data.List as List
 import Data.List (List)
 import Data.Map as Map
 import Data.Maybe (Maybe)
 import Data.StrMap as StrMap
-
 import Skald.Direction (Direction)
-import Skald.Internal (Place (..), Exits (..), Objects (..))
+import Skald.Internal (Place(..), Exits(..), Objects(..))
 import Skald.Object as Object
 import Skald.Object (Object)
 
 -- | Creates a new place with the given name.
 place :: String -> Place
-place name' = Place {
-    name: name',
-    describer: const "",
-    exits: Exits Map.empty,
-    objects: Objects StrMap.empty,
-    visited: false
-    }
+place name' = Place
+  { name: name'
+  , describer: const ""
+  , exits: Exits Map.empty
+  , objects: Objects StrMap.empty
+  , visited: false
+  }
 
 -- | An empty place.
 empty :: Place
@@ -105,7 +103,7 @@ objects (Place place') = place'.objects
 -- exists.
 object :: String -> Place -> Maybe Object
 object name' (Place { objects: Objects objects' }) =
-    StrMap.lookup name' objects'
+  StrMap.lookup name' objects'
 
 -- | Modify the given place's contained objects with the given function.
 updateObjects :: (Objects -> Objects) -> Place -> Place
@@ -114,16 +112,16 @@ updateObjects f (Place place') = Place (place' { objects = f place'.objects })
 -- | Remove an object from the given place.
 removeObject :: Object -> Place -> Place
 removeObject object' =
-    updateObjects
-        \(Objects x) -> Objects (StrMap.delete (Object.name object') x)
+  updateObjects
+    \(Objects x) -> Objects (StrMap.delete (Object.name object') x)
 
 -- | Add an object to the given place.
 addObject :: Object -> Place -> Place
 addObject object' =
-    updateObjects
-        \(Objects x) -> Objects (StrMap.insert (Object.name object') object' x)
+  updateObjects
+    \(Objects x) -> Objects (StrMap.insert (Object.name object') object' x)
 
 -- | The list of names of objects contained in the given place.
 objectNames :: Place -> List String
 objectNames (Place { objects: Objects objects' }) =
-    List.fromFoldable (StrMap.keys objects')
+  List.fromFoldable (StrMap.keys objects')

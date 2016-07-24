@@ -4,26 +4,24 @@
 -- http://opensource.org/licenses/MIT>. This file may not be copied, modified,
 -- or distributed except according to those terms.
 
-module Skald.Tale (
-    Tale(..),
-    tale,
-    title,
-    author,
-    initialWorld,
-    preamble,
-    by,
-    withPreamble,
-    thatBeginsIn,
-    withPlace,
-    withPlaces,
-    withCommand
-    ) where
+module Skald.Tale
+  ( Tale(..)
+  , tale
+  , title
+  , author
+  , initialWorld
+  , preamble
+  , by
+  , withPreamble
+  , thatBeginsIn
+  , withPlace
+  , withPlaces
+  , withCommand
+  ) where
 
 import Prelude
-
 import Data.Foldable (foldl)
 import Data.StrMap as StrMap
-
 import Skald.Action as Action
 import Skald.Command as Command
 import Skald.Command (command)
@@ -32,21 +30,21 @@ import Skald.Place (Place)
 import Skald.World as World
 import Skald.World (World)
 
-data Tale = Tale {
-    title :: String,
-    author :: String,
-    initialWorld :: World,
-    preamble :: Tale -> String
-    }
+data Tale = Tale
+  { title :: String
+  , author :: String
+  , initialWorld :: World
+  , preamble :: Tale -> String
+  }
 
 -- | Creates an empty tale with the given title.
 tale :: String -> Tale
-tale title' = Tale {
-    title: title',
-    author: "",
-    initialWorld: Action.emptyWorld,
-    preamble: defaultPreamble
-    }
+tale title' = Tale
+  { title: title'
+  , author: ""
+  , initialWorld: Action.emptyWorld
+  , preamble: defaultPreamble
+  }
 
 -- | The title of the given tale.
 title :: Tale -> String
@@ -84,30 +82,30 @@ withPreamble preamble' (Tale tale') = Tale (tale' { preamble = preamble' })
 -- | Sets the place where the tale begins.
 thatBeginsIn :: Place -> Tale -> Tale
 thatBeginsIn place (Tale tale') =
-    withPlace place
-    $ Tale (tale' { initialWorld = World.setCurrentPlace place tale'.initialWorld })
+  withPlace place
+  $ Tale (tale' { initialWorld = World.setCurrentPlace place tale'.initialWorld })
 
 -- | Adds the given place to the tale.
 withPlace :: Place -> Tale -> Tale
 withPlace place (Tale tale') =
-    Tale (tale' { initialWorld = newWorld })
-    where
-        update = StrMap.insert (Place.name place) place
-        newWorld = World.updatePlaces update tale'.initialWorld
+  Tale (tale' { initialWorld = newWorld })
+  where
+    update = StrMap.insert (Place.name place) place
+    newWorld = World.updatePlaces update tale'.initialWorld
 
 -- | Adds the given places to the tale.
 withPlaces :: Array Place -> Tale -> Tale
 withPlaces places (Tale tale') =
-    Tale (tale' { initialWorld = newWorld })
-    where
-        update world =
-            foldl (\places' place -> StrMap.insert (Place.name place) place places') world places
-        newWorld = World.updatePlaces update tale'.initialWorld
+  Tale (tale' { initialWorld = newWorld })
+  where
+    update world =
+      foldl (\places' place -> StrMap.insert (Place.name place) place places') world places
+    newWorld = World.updatePlaces update tale'.initialWorld
 
 -- | `withCommand pattern handler tale`
 withCommand :: String -> Command.Handler -> Tale -> Tale
 withCommand pattern handler (Tale tale') =
-    Tale (tale' { initialWorld = newWorld })
-    where
-        update = Command.insert (command pattern) handler
-        newWorld = World.updateCommands update tale'.initialWorld
+  Tale (tale' { initialWorld = newWorld })
+  where
+    update = Command.insert (command pattern) handler
+    newWorld = World.updateCommands update tale'.initialWorld

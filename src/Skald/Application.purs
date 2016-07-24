@@ -4,14 +4,13 @@
 -- http://opensource.org/licenses/MIT>. This file may not be copied, modified,
 -- or distributed except according to those terms.
 
-module Skald.Application (
-    Application,
-    Effects,
-    run
-    ) where
+module Skald.Application
+  ( Application
+  , Effects
+  , run
+  ) where
 
 import Prelude
-
 import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.Free (fromEff)
 import Control.Monad.Eff (Eff)
@@ -20,18 +19,17 @@ import Control.Monad.Writer.Trans (execWriterT)
 import Data.Array as Array
 import Data.List ((:))
 import Data.Tuple as Tuple
-import Data.Tuple (Tuple (..))
+import Data.Tuple (Tuple(..))
 import Halogen as H
 import Halogen.HTML.Events.Indexed as HE
 import Halogen.HTML.Indexed as HH
 import Halogen.HTML.Properties.Indexed as HP
 import Halogen.Util (awaitBody, runHalogenAff)
-
 import Skald.Action as Action
 import Skald.Command as Command
 import Skald.History as History
 import Skald.History (History)
-import Skald.Internal (HistoricalEntry (..))
+import Skald.Internal (HistoricalEntry(..))
 import Skald.Focus (FOCUS, focus)
 import Skald.Model as Model
 import Skald.Model (Model)
@@ -44,14 +42,14 @@ type Application = Eff (Effects ()) Unit
 type Effects eff = H.HalogenEffects (focus :: FOCUS | eff)
 
 data Query a
-    = UpdateDescription String a
-    | Submit String a
+  = UpdateDescription String a
+  | Submit String a
 
 -- | Tell the given tale.
 run :: Tale -> Application
 run tale = runHalogenAff do
-    body <- awaitBody
-    H.runUI (ui tale) (startUp tale) body
+  body <- awaitBody
+  H.runUI (ui tale) (startUp tale) body
 
 ui :: forall eff. Tale -> H.Component Model Query (Aff (Effects eff))
 ui tale = H.component { render, eval }
@@ -84,35 +82,35 @@ ui tale = H.component { render, eval }
 -- | Renders history to an array of HTML elements.
 renderHistory :: forall a. History -> Array (H.ComponentHTML a)
 renderHistory =
-    Array.fromFoldable <<< map renderHistoricalEntry <<< History.toList
+  Array.fromFoldable <<< map renderHistoricalEntry <<< History.toList
 
 -- | Renders a historical entry to an HTML element.
 renderHistoricalEntry :: forall a. HistoricalEntry -> H.ComponentHTML a
 renderHistoricalEntry entry =
-    HH.p attributes [HH.text (Tuple.snd classAndString)]
-    where
-        classAndString = case entry of
-           Message string -> Tuple "message" string
-           Echo string -> Tuple "echo" string
-           Heading string -> Tuple "heading" string
-           Error string -> Tuple "error" string
-           Debug string -> Tuple "debug" string
-        attributes = [HP.class_ (HH.className (Tuple.fst classAndString))]
+  HH.p attributes [HH.text (Tuple.snd classAndString)]
+  where
+    classAndString = case entry of
+      Message string -> Tuple "message" string
+      Echo string -> Tuple "echo" string
+      Heading string -> Tuple "heading" string
+      Error string -> Tuple "error" string
+      Debug string -> Tuple "debug" string
+    attributes = [HP.class_ (HH.className (Tuple.fst classAndString))]
 
 -- | Submits the contents of the input field to the command parser.
 update :: String -> Model -> Model
 update field model = case runState (execWriterT (Command.parse field)) (Model.world model) of
-    Tuple commandResult newWorld ->
-        Model.setWorld newWorld
-        $ Model.appendHistory (History.cons (History.echo field) commandResult)
-        $ model
+  Tuple commandResult newWorld ->
+    Model.setWorld newWorld
+    $ Model.appendHistory (History.cons (History.echo field) commandResult)
+    $ model
 
 startUp :: Tale -> Model
 startUp tale = case runState (execWriterT onStartUp) world of
-    Tuple description newWorld ->
-        Model.setWorld newWorld
-        $ Model.setHistory description
-        $ Model.empty
-    where
-        world = Tale.initialWorld tale
-        onStartUp = Action.enterPlace (World.currentPlace world)
+  Tuple description newWorld ->
+      Model.setWorld newWorld
+      $ Model.setHistory description
+      $ Model.empty
+  where
+    world = Tale.initialWorld tale
+    onStartUp = Action.enterPlace (World.currentPlace world)

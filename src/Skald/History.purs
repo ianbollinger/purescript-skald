@@ -8,23 +8,22 @@
 --
 -- "History" is the name for in-tale messages, error messages, and echoed
 -- player input generated during the telling of a tale.
-module Skald.History (
-    module InternalExports,
-    cons,
-    fromList,
-    toList,
-    singleton,
-    message,
-    echo,
-    heading,
-    error,
-    debug
-    ) where
+module Skald.History
+  ( module InternalExports
+  , cons
+  , fromList
+  , toList
+  , singleton
+  , message
+  , echo
+  , heading
+  , error
+  , debug
+  ) where
 
-import Data.List (List (..), (:))
-
+import Data.List (List(..), (:))
 import Skald.Internal (History, HistoricalEntry) as InternalExports
-import Skald.Internal (History (..), HistoricalEntry (..))
+import Skald.Internal (History(..), HistoricalEntry(..))
 
 -- | Add a historical entry to the beginning of the given history.
 cons :: HistoricalEntry -> History -> History
@@ -32,7 +31,7 @@ cons entry (History history) = History (entry : history)
 
 -- | Create a new history from a historical entry list.
 fromList :: List HistoricalEntry -> History
-fromList list = History list
+fromList = History
 
 -- | Create a historical entry list from the given history.
 toList :: History -> List HistoricalEntry
