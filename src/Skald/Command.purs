@@ -18,20 +18,19 @@ import Prelude
 import Control.Monad.Eff.Exception.Unsafe (unsafeThrow)
 import Control.Monad.State (get)
 import Control.Monad.Writer as Writer
-import Data.Either (Either (..))
+import Data.Either (Either(..))
 import Data.List as List
-import Data.List (List (..), (:))
+import Data.List (List(..), (:))
 import Data.Maybe as Maybe
-import Data.Maybe (Maybe (..))
+import Data.Maybe (Maybe(..))
 import Data.String as String
 import Data.String.Regex as Regex
 import Data.String.Regex (regex)
-import Data.Tuple (Tuple (..))
-
+import Data.Tuple (Tuple(..))
 import Skald.History as History
 import Skald.History (HistoricalEntry)
 import Skald.Internal (Command) as InternalExports
-import Skald.Internal (Action, Command (..), CommandHandler, CommandMap)
+import Skald.Internal (Action, Command(..), CommandHandler, CommandMap)
 import Skald.Object as Object
 import Skald.Place as Place
 import Skald.World as World

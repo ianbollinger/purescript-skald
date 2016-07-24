@@ -33,7 +33,6 @@ import Data.Monoid (class Monoid)
 import Data.String.Regex (Regex)
 import Data.StrMap (StrMap)
 import Data.Tuple (Tuple)
-
 import Skald.Debug (class Debug, debug)
 import Skald.Direction (Direction)
 

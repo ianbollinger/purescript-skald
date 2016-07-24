@@ -19,9 +19,8 @@ import Prelude
 
 import Data.Map as Map
 import Data.Maybe (Maybe)
-
 import Skald.Internal (Object) as InternalExports
-import Skald.Internal (Action, Command, Object (..))
+import Skald.Internal (Action, Command, Object(..))
 
 -- | Creates a new object with the given name and description.
 object :: String -> String -> Object

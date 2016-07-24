@@ -11,7 +11,6 @@ module Skald.Focus
   ) where
 
 import Prelude
-
 import Control.Monad.Eff (Eff)
 
 foreign import data FOCUS :: !

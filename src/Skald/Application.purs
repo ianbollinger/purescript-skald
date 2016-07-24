@@ -20,18 +20,17 @@ import Control.Monad.Writer.Trans (execWriterT)
 import Data.Array as Array
 import Data.List ((:))
 import Data.Tuple as Tuple
-import Data.Tuple (Tuple (..))
+import Data.Tuple (Tuple(..))
 import Halogen as H
 import Halogen.HTML.Events.Indexed as HE
 import Halogen.HTML.Indexed as HH
 import Halogen.HTML.Properties.Indexed as HP
 import Halogen.Util (awaitBody, runHalogenAff)
-
 import Skald.Action as Action
 import Skald.Command as Command
 import Skald.History as History
 import Skald.History (History)
-import Skald.Internal (HistoricalEntry (..))
+import Skald.Internal (HistoricalEntry(..))
 import Skald.Focus (FOCUS, focus)
 import Skald.Model as Model
 import Skald.Model (Model)

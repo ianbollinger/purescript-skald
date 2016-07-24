@@ -24,7 +24,7 @@ module Skald.Direction
 import Prelude
 
 import Data.Generic (class Generic, gCompare, gEq)
-import Data.Maybe (Maybe (..))
+import Data.Maybe (Maybe(..))
 
 import Skald.Debug (class Debug)
 

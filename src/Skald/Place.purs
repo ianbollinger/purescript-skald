@@ -38,15 +38,13 @@ module Skald.Place
   ) where
 
 import Prelude
-
 import Data.List as List
 import Data.List (List)
 import Data.Map as Map
 import Data.Maybe (Maybe)
 import Data.StrMap as StrMap
-
 import Skald.Direction (Direction)
-import Skald.Internal (Place (..), Exits (..), Objects (..))
+import Skald.Internal (Place(..), Exits(..), Objects(..))
 import Skald.Object as Object
 import Skald.Object (Object)
 

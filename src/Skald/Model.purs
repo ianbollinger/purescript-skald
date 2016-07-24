@@ -17,9 +17,7 @@ module Skald.Model
   ) where
 
 import Prelude
-
 import Data.Monoid (mempty)
-
 import Skald.Action as Action
 import Skald.History (History)
 import Skald.World (World)

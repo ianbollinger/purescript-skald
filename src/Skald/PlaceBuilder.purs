@@ -14,17 +14,15 @@ module Skald.PlaceBuilder
   ) where
 
 import Prelude
-
 import Data.Foldable (foldr)
 import Data.Map as Map
 import Data.StrMap as StrMap
-import Data.Tuple (Tuple (..))
-
+import Data.Tuple (Tuple(..))
 import Skald.Direction (Direction)
 import Skald.Object as Object
 import Skald.Object (Object)
 import Skald.Place as Place
-import Skald.Place (Place (..))
+import Skald.Place (Place(..))
 
 {-
 

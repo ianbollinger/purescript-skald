@@ -21,10 +21,9 @@ module Skald.History
   , debug
   ) where
 
-import Data.List (List (..), (:))
-
+import Data.List (List(..), (:))
 import Skald.Internal (History, HistoricalEntry) as InternalExports
-import Skald.Internal (History (..), HistoricalEntry (..))
+import Skald.Internal (History(..), HistoricalEntry(..))
 
 -- | Add a historical entry to the beginning of the given history.
 cons :: HistoricalEntry -> History -> History

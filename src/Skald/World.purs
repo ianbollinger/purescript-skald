@@ -42,15 +42,13 @@ module Skald.World
   ) where
 
 import Prelude
-
 import Data.List as List
-import Data.List (List (..))
-import Data.Maybe (Maybe (..))
+import Data.List (List(..))
+import Data.Maybe (Maybe(..))
 import Data.StrMap (StrMap)
 import Data.StrMap as StrMap
-
 import Skald.Internal (Inventory, Places, World) as InternalExports
-import Skald.Internal (CommandMap, Inventory (..), World (..))
+import Skald.Internal (CommandMap, Inventory(..), World(..))
 import Skald.Object as Object
 import Skald.Object (Object)
 import Skald.Place as Place

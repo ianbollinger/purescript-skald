@@ -17,7 +17,7 @@ import Data.Map (Map)
 import Data.String as String
 import Data.StrMap as StrMap
 import Data.StrMap (StrMap)
-import Data.Tuple (Tuple (..))
+import Data.Tuple (Tuple(..))
 
 class Debug a where
     debug :: a -> String

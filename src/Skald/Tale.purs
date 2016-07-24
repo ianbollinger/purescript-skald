@@ -20,10 +20,8 @@ module Skald.Tale
   ) where
 
 import Prelude
-
 import Data.Foldable (foldl)
 import Data.StrMap as StrMap
-
 import Skald.Action as Action
 import Skald.Command as Command
 import Skald.Command (command)

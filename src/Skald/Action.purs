@@ -32,13 +32,11 @@ module Skald.Action
   ) where
 
 import Prelude
-
 import Control.Monad.State as State
 import Control.Monad.Writer as Writer
-import Data.List (List (..), (:))
-import Data.Maybe (Maybe (..))
+import Data.List (List(..), (:))
+import Data.Maybe (Maybe(..))
 import Data.Monoid (mempty)
-
 import Skald.Command as Command
 import Skald.Command (Command, command)
 import Skald.Debug (debug)
