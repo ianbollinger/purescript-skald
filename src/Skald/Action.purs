@@ -4,26 +4,32 @@
 -- http://opensource.org/licenses/MIT>. This file may not be copied, modified,
 -- or distributed except according to those terms.
 
-module Skald.Action (
-    module Skald.Internal,
-    enterPlace,
-    doNothing,
-    say,
-    sayError,
-    emptyWorld,
-    describePlace,
-    describeObject,
-    removeFromInventory,
-    createObject,
-
-    looking, look,
-    searching, search,
-    going, go,
-    taking, take,
-    takingInventory, takeInventory,
-    dropping, drop,
-    waiting, wait
-    ) where
+module Skald.Action
+  ( module Skald.Internal
+  , enterPlace
+  , doNothing
+  , say
+  , sayError
+  , emptyWorld
+  , describePlace
+  , describeObject
+  , removeFromInventory
+  , createObject
+  , looking
+  , look
+  , searching
+  , search
+  , going
+  , go
+  , taking
+  , take
+  , takingInventory
+  , takeInventory
+  , dropping
+  , drop
+  , waiting
+  , wait
+  ) where
 
 import Prelude
 

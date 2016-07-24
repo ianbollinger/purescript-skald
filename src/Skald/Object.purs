@@ -4,16 +4,16 @@
 -- http://opensource.org/licenses/MIT>. This file may not be copied, modified,
 -- or distributed except according to those terms.
 
-module Skald.Object (
-    module InternalExports,
-    object,
-    scenery,
-    name,
-    description,
-    fixedInPlace,
-    insteadOf,
-    command
-    ) where
+module Skald.Object
+  ( module InternalExports
+  , object
+  , scenery
+  , name
+  , description
+  , fixedInPlace
+  , insteadOf
+  , command
+  ) where
 
 import Prelude
 

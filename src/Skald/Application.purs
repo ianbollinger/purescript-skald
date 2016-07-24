@@ -4,11 +4,11 @@
 -- http://opensource.org/licenses/MIT>. This file may not be copied, modified,
 -- or distributed except according to those terms.
 
-module Skald.Application (
-    Application,
-    Effects,
-    run
-    ) where
+module Skald.Application
+  ( Application
+  , Effects
+  , run
+  ) where
 
 import Prelude
 

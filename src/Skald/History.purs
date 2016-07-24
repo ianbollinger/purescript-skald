@@ -8,18 +8,18 @@
 --
 -- "History" is the name for in-tale messages, error messages, and echoed
 -- player input generated during the telling of a tale.
-module Skald.History (
-    module InternalExports,
-    cons,
-    fromList,
-    toList,
-    singleton,
-    message,
-    echo,
-    heading,
-    error,
-    debug
-    ) where
+module Skald.History
+  ( module InternalExports
+  , cons
+  , fromList
+  , toList
+  , singleton
+  , message
+  , echo
+  , heading
+  , error
+  , debug
+  ) where
 
 import Data.List (List (..), (:))
 

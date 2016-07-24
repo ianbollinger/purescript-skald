@@ -5,10 +5,10 @@
 -- or distributed except according to those terms.
 
 -- TODO: rename module?
-module Skald.Focus (
-    FOCUS,
-    focus
-    ) where
+module Skald.Focus
+  ( FOCUS
+  , focus
+  ) where
 
 import Prelude
 

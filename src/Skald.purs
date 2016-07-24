@@ -4,34 +4,34 @@
 -- http://opensource.org/licenses/MIT>. This file may not be copied, modified,
 -- or distributed except according to those terms.
 
-module Skald (
-    -- * Applications
-    module Skald.Application,
+module Skald
+  ( -- * Applications
+    module Skald.Application
 
-    -- * Tales
-    module Skald.Tale,
+  -- * Tales
+  , module Skald.Tale
 
-    -- * Worlds
-    module Skald.World,
+  -- * Worlds
+  , module Skald.World
 
-    -- * Places
-    module Skald.Place,
-    module Skald.PlaceBuilder,
+  -- * Places
+  , module Skald.Place
+  , module Skald.PlaceBuilder
 
-    -- * Objects
-    module Skald.Object,
+  -- * Objects
+  , module Skald.Object
 
-    -- * Actions
-    module Skald.Action,
+  -- * Actions
+  , module Skald.Action
 
-    -- * Directions
-    module Skald.Direction,
+  -- * Directions
+  , module Skald.Direction
 
-    -- * Useful re-exports
-    module Prelude,
-    module Data.List,
-    module Data.Maybe
-    ) where
+  -- * Useful re-exports
+  , module Prelude
+  , module Data.List
+  , module Data.Maybe
+  ) where
 
 import Prelude (
     class Applicative, pure, liftA1, unless, when,

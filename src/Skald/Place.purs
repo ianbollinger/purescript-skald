@@ -6,36 +6,36 @@
 
 -- | Places are discrete areas of the world containing objects the player can
 -- directly interact with.
-module Skald.Place (
-    -- TODO: don't export innards.
-    module Skald.Internal,
+module Skald.Place
+  ( -- TODO: don't export innards.
+    module Skald.Internal
 
-    -- * Construction
-    place,
-    empty,
+  -- * Construction
+  , place
+  , empty
 
-    -- * Names and descriptions
-    name,
-    description,
+  -- * Names and descriptions
+  , name
+  , description
 
-    -- * Exits
-    exits,
-    exitName,
-    exitDirections,
+  -- * Exits
+  , exits
+  , exitName
+  , exitDirections
 
-    -- * Visited
-    visited,
-    unvisited,
-    setVisited,
+  -- * Visited
+  , visited
+  , unvisited
+  , setVisited
 
-    -- * Objects
-    objects,
-    object,
-    updateObjects,
-    removeObject,
-    addObject,
-    objectNames
-    ) where
+  -- * Objects
+  , objects
+  , object
+  , updateObjects
+  , removeObject
+  , addObject
+  , objectNames
+  ) where
 
 import Prelude
 

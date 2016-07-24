@@ -4,42 +4,42 @@
 -- http://opensource.org/licenses/MIT>. This file may not be copied, modified,
 -- or distributed except according to those terms.
 
-module Skald.World (
-    module InternalExports,
+module Skald.World
+  ( module InternalExports
 
-    -- * Construction
-    empty,
+  -- * Construction
+  , empty
 
-    -- * Places
-    places,
-    setPlaces,
-    updatePlaces,
-    place,
+  -- * Places
+  , places
+  , setPlaces
+  , updatePlaces
+  , place
 
-    -- * Current place
-    currentPlace,
-    setCurrentPlace,
-    updateCurrentPlace,
+  -- * Current place
+  , currentPlace
+  , setCurrentPlace
+  , updateCurrentPlace
 
-    -- * Objects
-    removeObject,
-    addObject,
+  -- * Objects
+  , removeObject
+  , addObject
 
-    -- * Commands
-    commands,
-    setCommands,
-    updateCommands,
+  -- * Commands
+  , commands
+  , setCommands
+  , updateCommands
 
-    -- * Inventory
-    inventory,
-    item,
-    updateInventory,
-    -- TODO: re-export from Skald.
-    inventoryIsEmpty,
-    addToInventory,
-    removeFromInventory,
-    inventoryNames
-    ) where
+  -- * Inventory
+  , inventory
+  , item
+  , updateInventory
+  -- TODO: re-export from Skald.
+  , inventoryIsEmpty
+  , addToInventory
+  , removeFromInventory
+  , inventoryNames
+  ) where
 
 import Prelude
 

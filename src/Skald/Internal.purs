@@ -5,22 +5,22 @@
 -- or distributed except according to those terms.
 
 -- | Defines mutally-recursively data types.
-module Skald.Internal (
-    Object (..),
-    ObjectCommands,
-    Place (..),
-    Exits (..),
-    Objects (..),
-    World (..),
-    Command (..),
-    CommandHandler,
-    CommandMap,
-    Action,
-    Places (..),
-    Inventory (..),
-    History (..),
-    HistoricalEntry (..)
-    ) where
+module Skald.Internal
+  ( Object(..)
+  , ObjectCommands
+  , Place(..)
+  , Exits(..)
+  , Objects(..)
+  , World(..)
+  , Command(..)
+  , CommandHandler
+  , CommandMap
+  , Action
+  , Places(..)
+  , Inventory(..)
+  , History(..)
+  , HistoricalEntry(..)
+  ) where
 
 import Prelude
 

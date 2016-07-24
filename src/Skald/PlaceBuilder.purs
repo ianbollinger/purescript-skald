@@ -4,14 +4,14 @@
 -- http://opensource.org/licenses/MIT>. This file may not be copied, modified,
 -- or distributed except according to those terms.
 
-module Skald.PlaceBuilder (
-    withDescription,
-    whenDescribing,
-    withExit,
-    withExits,
-    to,
-    containing
-    ) where
+module Skald.PlaceBuilder
+  ( withDescription
+  , whenDescribing
+  , withExit
+  , withExits
+  , to
+  , containing
+  ) where
 
 import Prelude
 

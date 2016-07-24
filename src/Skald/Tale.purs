@@ -4,20 +4,20 @@
 -- http://opensource.org/licenses/MIT>. This file may not be copied, modified,
 -- or distributed except according to those terms.
 
-module Skald.Tale (
-    Tale(..),
-    tale,
-    title,
-    author,
-    initialWorld,
-    preamble,
-    by,
-    withPreamble,
-    thatBeginsIn,
-    withPlace,
-    withPlaces,
-    withCommand
-    ) where
+module Skald.Tale
+  ( Tale(..)
+  , tale
+  , title
+  , author
+  , initialWorld
+  , preamble
+  , by
+  , withPreamble
+  , thatBeginsIn
+  , withPlace
+  , withPlaces
+  , withCommand
+  ) where
 
 import Prelude
 

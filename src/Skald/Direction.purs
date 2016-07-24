@@ -5,21 +5,21 @@
 -- or distributed except according to those terms.
 
 -- | Contains the data type for the cardinal directions.
-module Skald.Direction (
-    Direction (..),
-    fromString,
-    opposite,
-    north,
-    northeast,
-    east,
-    southeast,
-    south,
-    southwest,
-    west,
-    northwest,
-    up,
-    down
-    ) where
+module Skald.Direction
+  ( Direction(..)
+  , fromString
+  , opposite
+  , north
+  , northeast
+  , east
+  , southeast
+  , south
+  , southwest
+  , west
+  , northwest
+  , up
+  , down
+  ) where
 
 import Prelude
 
