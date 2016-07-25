@@ -4,6 +4,9 @@
     "postinstall": "bower install",
     "build": "jshint src && jscs src && pulp browserify --optimise --to dist/skald.js"
   },
+  "dependencies": {
+    "virtual-dom": "^2.1.1"
+  },
   "devDependencies": {
     "jscs": "^3.0.7",
     "jshint": "^2.9.2",

@@ -38,7 +38,6 @@
     "purescript-monoid": "^1.0.0",
     "purescript-strings": "^1.0.0",
     "purescript-transformers": "^1.0.0",
-    "purescript-tuples": "^1.0.0",
-    "virtual-dom": "^2.1.1"
+    "purescript-tuples": "^1.0.0"
   }
 }
