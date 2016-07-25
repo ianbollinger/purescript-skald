@@ -53,31 +53,30 @@ run tale = runHalogenAff do
 
 ui :: forall eff. Tale -> H.Component Model Query (Aff (Effects eff))
 ui tale = H.component { render, eval }
-    where
-        render :: Model -> H.ComponentHTML Query
-        render model = HH.main_ ([heading] <> history <> [form])
-            where
-                heading = HH.h1_ [HH.text (Tale.title tale)]
-                history = renderHistory (Model.history model)
-                form = HH.form [onSubmit] [input]
-                onSubmit =
-                    HE.onSubmit (HE.input_ (Submit (Model.inputField model)))
-                input = HH.input [
-                    HP.inputType HP.InputText,
-                    HP.placeholder "Enter command",
-                    HP.id_ "input",
-                    HE.onValueInput (HE.input UpdateDescription)
-                ]
+  where
+    render :: Model -> H.ComponentHTML Query
+    render model = HH.main_ ([heading] <> history <> [form])
+      where
+        heading = HH.h1_ [HH.text (Tale.title tale)]
+        history = renderHistory (Model.history model)
+        form = HH.form [onSubmit] [input]
+        onSubmit = HE.onSubmit (HE.input_ (Submit (Model.inputField model)))
+        input = HH.input [
+          HP.inputType HP.InputText,
+          HP.placeholder "Enter command",
+          HP.id_ "input",
+          HE.onValueInput (HE.input UpdateDescription)
+        ]
 
-        eval :: Query ~> H.ComponentDSL Model Query (Aff (Effects eff))
-        eval query = case query of
-            UpdateDescription field next -> do
-                H.modify (Model.setInputField field)
-                pure next
-            Submit field next -> do
-                H.modify (update field)
-                fromEff focus
-                pure next
+    eval :: Query ~> H.ComponentDSL Model Query (Aff (Effects eff))
+    eval = case _ of
+      UpdateDescription field next -> do
+        H.modify (Model.setInputField field)
+        pure next
+      Submit field next -> do
+        H.modify (update field)
+        fromEff focus
+        pure next
 
 -- | Renders history to an array of HTML elements.
 renderHistory :: forall a. History -> Array (H.ComponentHTML a)
@@ -99,18 +98,19 @@ renderHistoricalEntry entry =
 
 -- | Submits the contents of the input field to the command parser.
 update :: String -> Model -> Model
-update field model = case runState (execWriterT (Command.parse field)) (Model.world model) of
-  Tuple commandResult newWorld ->
-    Model.setWorld newWorld
-    $ Model.appendHistory (History.cons (History.echo field) commandResult)
-    $ model
+update field model =
+  case runState (execWriterT (Command.parse field)) (Model.world model) of
+    Tuple commandResult newWorld ->
+      Model.setWorld newWorld
+      $ Model.appendHistory (History.cons (History.echo field) commandResult)
+      $ model
 
 startUp :: Tale -> Model
 startUp tale = case runState (execWriterT onStartUp) world of
   Tuple description newWorld ->
-      Model.setWorld newWorld
-      $ Model.setHistory description
-      $ Model.empty
+    Model.setWorld newWorld
+    $ Model.setHistory description
+    $ Model.empty
   where
     world = Tale.initialWorld tale
     onStartUp = Action.enterPlace (World.currentPlace world)
