@@ -21,7 +21,7 @@ import Data.Either (Either(..))
 import Data.List as List
 import Data.List (List(..), (:))
 import Data.Maybe as Maybe
-import Data.Maybe (Maybe(..))
+import Data.Maybe (Maybe(..), fromMaybe)
 import Data.String as String
 import Data.String.Regex as Regex
 import Data.String.Regex (regex)
@@ -56,10 +56,8 @@ parse field = do
   -- TODO: this isn't lazy any more! Stop after first match.
   case List.head (List.filter predicate (map matcher (World.commands world))) of
     Just (Tuple command' (Tuple (Just matches) action)) -> do
-      let submatches = case List.tail (catMaybes (List.fromFoldable matches)) of
-            Just x -> x
-            -- TODO: this should be impossible.
-            Nothing -> Nil
+      -- TODO: Nil should be impossible.
+      let submatches = fromMaybe Nil (List.tail (List.catMaybes (List.fromFoldable matches)))
       -- TODO: this is a dirty hack. We match the object just to throw it
       -- away, which seems fruitless (why not pass it on to the action?)
       -- Furthermore, it assumes every command operates over a single
@@ -68,9 +66,7 @@ parse field = do
         x : _ ->
           case Place.object x (World.currentPlace world) of
             Just directObject ->
-              case Object.command command' directObject of
-                Just y -> y
-                Nothing -> action submatches
+              fromMaybe (action submatches) (Object.command command' directObject)
             Nothing -> action submatches
         Nil ->  action submatches
     _ -> do
@@ -88,13 +84,6 @@ normalizeWhitespace = Regex.replace whitespaceRegex " "
       Right regex' -> regex'
       -- NOTE: This cannot occur.
       Left error -> unsafeThrow "normalizeWhitespace failed."
-
--- TODO: move.
-catMaybes :: forall a. List (Maybe a) -> List a
-catMaybes = case _ of
-  Nil -> Nil
-  Nothing : xs -> catMaybes xs
-  Just x : xs -> x : catMaybes xs
 
 sayParserError :: String -> Action Unit
 sayParserError = Writer.tell <<< History.singleton <<< formatParserError

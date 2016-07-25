@@ -44,7 +44,7 @@ module Skald.World
 import Prelude
 import Data.List as List
 import Data.List (List(..))
-import Data.Maybe (Maybe(..))
+import Data.Maybe (Maybe, fromMaybe)
 import Data.StrMap (StrMap)
 import Data.StrMap as StrMap
 import Skald.Internal (Inventory, Places, World) as InternalExports
@@ -76,9 +76,7 @@ updatePlaces :: (StrMap Place -> StrMap Place) -> World -> World
 updatePlaces f (World world) = World (world { places = f world.places })
 
 place :: String -> World -> Place
-place name world = case StrMap.lookup name (places world) of
-  Just place' -> place'
-  Nothing -> Place.empty
+place name world = fromMaybe Place.empty (StrMap.lookup name (places world))
 
 currentPlace :: World -> Place
 currentPlace (World world) = place world.currentPlaceName (World world)
