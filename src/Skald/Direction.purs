@@ -22,10 +22,7 @@ module Skald.Direction
   ) where
 
 import Prelude
-
-import Data.Generic (class Generic, gCompare, gEq)
 import Data.Maybe (Maybe(..))
-
 import Skald.Debug (class Debug)
 
 data Direction
@@ -40,13 +37,8 @@ data Direction
   | Up
   | Down
 
-derive instance genericDirection :: Generic Direction
-
-instance eqDirection :: Eq Direction where
-  eq = gEq
-
-instance ordDirection :: Ord Direction where
-  compare = gCompare
+derive instance eqDirection :: Eq Direction
+derive instance ordDirection :: Ord Direction
 
 instance showDirection :: Show Direction where
   show = case _ of

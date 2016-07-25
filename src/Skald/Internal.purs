@@ -26,7 +26,7 @@ import Prelude
 
 import Control.Monad.Writer.Trans (WriterT)
 import Control.Monad.State (State)
-import Data.Generic (class Generic, gCompare, gEq, gShow)
+import Data.Generic (class Generic, gShow)
 import Data.List (List (..))
 import Data.Map (Map)
 import Data.Monoid (class Monoid)
@@ -73,8 +73,7 @@ instance debugPlace :: Debug Place where
 
 newtype Exits = Exits (Map Direction String)
 
-instance eqExits :: Eq Exits where
-  eq (Exits a) (Exits b) = eq a b
+derive instance eqExits :: Eq Exits
 
 instance showExits :: Show Exits where
   show (Exits a) = "Exits (" <> show a <> ")"
@@ -126,11 +125,9 @@ newtype History = History (List HistoricalEntry)
 
 derive instance genericHistory :: Generic History
 
-instance eqHistory :: Eq History where
-  eq = gEq
+derive instance eqHistory :: Eq History
 
-instance ordHistory :: Ord History where
-  compare = gCompare
+derive instance ordHistory :: Ord History
 
 instance monoidHistory :: Monoid History where
   mempty = History Nil
@@ -150,11 +147,9 @@ data HistoricalEntry
 
 derive instance genericHistoricalEntry :: Generic HistoricalEntry
 
-instance eqHistoricalEntry :: Eq HistoricalEntry where
-  eq = gEq
+derive instance eqHistoricalEntry :: Eq HistoricalEntry
 
-instance ordHistoricalEntry:: Ord HistoricalEntry where
-  compare = gCompare
+derive instance ordHistoricalEntry:: Ord HistoricalEntry
 
 instance showHistoricalEntry :: Show HistoricalEntry where
   show = gShow
