@@ -2,5 +2,5 @@
 /output/
 /node_modules/
 /bower_components/
-/dist/app.js
+/dist/skald.js
 /.psc-ide-port
