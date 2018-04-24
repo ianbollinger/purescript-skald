@@ -1,15 +1,11 @@
--- Copyright 2016 Ian D. Bollinger
+-- Copyright 2018 Ian D. Bollinger
 --
--- Licensed under the MIT license <LICENSE or
--- http://opensource.org/licenses/MIT>. This file may not be copied, modified,
--- or distributed except according to those terms.
+-- Licensed under the MIT license <https://spdx.org/licenses/MIT>. This file may
+-- not be copied, modified, or distributed except according to those terms.
 
 module Skald
-  ( -- * Applications
-    module Skald.Application
-
-  -- * Tales
-  , module Skald.Tale
+  ( -- * Tales
+    module Skald.Tale
 
   -- * Worlds
   , module Skald.World
@@ -71,7 +67,6 @@ import Skald.Action
   , go, taking, take, takingInventory, takeInventory, dropping, drop, waiting
   , wait
   )
-import Skald.Application (Application, Effects, run)
 import Skald.Direction
   ( Direction, north, northeast, east, southeast, south, southwest, west
   , northwest, up, down

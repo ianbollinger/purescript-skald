@@ -4,104 +4,22 @@
 -- not be copied, modified, or distributed except according to those terms.
 
 module Skald.Application
-  ( Application
-  , Effects
-  , run
+  ( startUp
+  , update
   ) where
 
 import Prelude
 
-import Control.Monad.Aff (Aff)
-import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Class (liftEff)
 import Control.Monad.State (runState)
 import Control.Monad.Writer.Trans (execWriterT)
-import Data.Array as Array
-import Data.Maybe (Maybe(..))
-import Data.Tuple as Tuple
 import Data.Tuple (Tuple(..))
-import Halogen as H
-import Halogen.HTML (HTML)
-import Halogen.HTML.Core (ClassName(..), text)
-import Halogen.HTML.Events as HE
-import Halogen.HTML.Elements as HH
-import Halogen.HTML.Properties as HP
-import Halogen.VDom.Driver (runUI)
-import Halogen.Aff.Effects (HalogenEffects)
-import Halogen.Aff.Util (awaitBody, runHalogenAff)
-import Skald.Action as Action
+import Skald.Action (enterPlace)
 import Skald.Command as Command
 import Skald.History as History
-import Skald.History (History)
-import Skald.Internal (HistoricalEntry(..))
-import Skald.Focus (FOCUS, focus)
-import Skald.Model as Model
 import Skald.Model (Model)
-import Skald.Tale as Tale
-import Skald.Tale (Tale)
-import Skald.World as World
-
-type Application = Eff (Effects ()) Unit
-
-type Effects eff = HalogenEffects (focus :: FOCUS | eff)
-
-data Query a
-  = UpdateDescription String a
-  | Submit String a
-
--- | Tell the given tale.
-run :: Tale -> Application
-run tale = runHalogenAff do
-  body <- awaitBody
-  runUI (ui tale) unit body
-
--- TODO: eliminate parameter.
-ui :: forall eff. Tale -> H.Component HTML Query Unit Void (Aff (Effects eff))
-ui tale = H.component { initialState, render, eval, receiver: const Nothing }
-  where
-    initialState = const (startUp tale)
-
-    render :: Model -> H.ComponentHTML Query
-    render model = HH.main_ ([heading] <> history <> [form])
-      where
-        heading = HH.h1_ [text (Tale.title tale)]
-        history = renderHistory (Model.history model)
-        form = HH.form [onSubmit] [input]
-        onSubmit = HE.onSubmit (HE.input_ (Submit (Model.inputField model)))
-        input = HH.input [
-          HP.type_ HP.InputText,
-          HP.placeholder "Enter command",
-          HP.id_ "input",
-          HE.onValueInput (HE.input UpdateDescription)
-        ]
-
-    eval :: Query ~> H.ComponentDSL Model Query Void (Aff (Effects eff))
-    eval = case _ of
-      UpdateDescription field next -> do
-        H.modify (Model.setInputField field)
-        pure next
-      Submit field next -> do
-        H.modify (update field)
-        liftEff focus
-        pure next
-
--- | Renders history to an array of HTML elements.
-renderHistory :: forall a. History -> Array (H.ComponentHTML a)
-renderHistory =
-  Array.fromFoldable <<< map renderHistoricalEntry <<< History.toList
-
--- | Renders a historical entry to an HTML element.
-renderHistoricalEntry :: forall a. HistoricalEntry -> H.ComponentHTML a
-renderHistoricalEntry entry =
-  HH.p attributes [text (Tuple.snd classAndString)]
-  where
-    classAndString = case entry of
-      Message string -> Tuple "message" string
-      Echo string -> Tuple "echo" string
-      Heading string -> Tuple "heading" string
-      Error string -> Tuple "error" string
-      Debug string -> Tuple "debug" string
-    attributes = [HP.class_ (ClassName (Tuple.fst classAndString))]
+import Skald.Model as Model
+import Skald.Tale (Tale, initialWorld)
+import Skald.World (currentPlace)
 
 -- | Submits the contents of the input field to the command parser.
 update :: String -> Model -> Model
@@ -119,5 +37,5 @@ startUp tale = case runState (execWriterT onStartUp) world of
     $ Model.setHistory description
     $ Model.empty
   where
-    world = Tale.initialWorld tale
-    onStartUp = Action.enterPlace (World.currentPlace world)
+    world = initialWorld tale
+    onStartUp = enterPlace (currentPlace world)

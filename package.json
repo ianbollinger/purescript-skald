@@ -1,11 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "build": "yarn pulp --to dist/skald.js",
-    "build:fast": "yarn pulp",
+    "build": "pulp --psc-package build",
     "docs": "pulp docs",
     "postinstall": "psc-package install",
-    "pulp": "pulp --psc-package build",
     "test": "pulp test"
   },
   "devDependencies": {
