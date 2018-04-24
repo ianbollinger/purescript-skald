@@ -1,8 +1,7 @@
--- Copyright 2016 Ian D. Bollinger
+-- Copyright 2018 Ian D. Bollinger
 --
--- Licensed under the MIT license <LICENSE or
--- http://opensource.org/licenses/MIT>. This file may not be copied, modified,
--- or distributed except according to those terms.
+-- Licensed under the MIT license <https://spdx.org/licenses/MIT>. This file may
+-- not be copied, modified, or distributed except according to those terms.
 
 module Skald.Application
   ( Application
@@ -11,20 +10,25 @@ module Skald.Application
   ) where
 
 import Prelude
+
 import Control.Monad.Aff (Aff)
-import Control.Monad.Aff.Free (fromEff)
 import Control.Monad.Eff (Eff)
+import Control.Monad.Eff.Class (liftEff)
 import Control.Monad.State (runState)
 import Control.Monad.Writer.Trans (execWriterT)
 import Data.Array as Array
-import Data.List ((:))
+import Data.Maybe (Maybe(..))
 import Data.Tuple as Tuple
 import Data.Tuple (Tuple(..))
 import Halogen as H
-import Halogen.HTML.Events.Indexed as HE
-import Halogen.HTML.Indexed as HH
-import Halogen.HTML.Properties.Indexed as HP
-import Halogen.Util (awaitBody, runHalogenAff)
+import Halogen.HTML (HTML)
+import Halogen.HTML.Core (ClassName(..), text)
+import Halogen.HTML.Events as HE
+import Halogen.HTML.Elements as HH
+import Halogen.HTML.Properties as HP
+import Halogen.VDom.Driver (runUI)
+import Halogen.Aff.Effects (HalogenEffects)
+import Halogen.Aff.Util (awaitBody, runHalogenAff)
 import Skald.Action as Action
 import Skald.Command as Command
 import Skald.History as History
@@ -39,7 +43,7 @@ import Skald.World as World
 
 type Application = Eff (Effects ()) Unit
 
-type Effects eff = H.HalogenEffects (focus :: FOCUS | eff)
+type Effects eff = HalogenEffects (focus :: FOCUS | eff)
 
 data Query a
   = UpdateDescription String a
@@ -49,33 +53,36 @@ data Query a
 run :: Tale -> Application
 run tale = runHalogenAff do
   body <- awaitBody
-  H.runUI (ui tale) (startUp tale) body
+  runUI (ui tale) unit body
 
-ui :: forall eff. Tale -> H.Component Model Query (Aff (Effects eff))
-ui tale = H.component { render, eval }
+-- TODO: eliminate parameter.
+ui :: forall eff. Tale -> H.Component HTML Query Unit Void (Aff (Effects eff))
+ui tale = H.component { initialState, render, eval, receiver: const Nothing }
   where
+    initialState = const (startUp tale)
+
     render :: Model -> H.ComponentHTML Query
     render model = HH.main_ ([heading] <> history <> [form])
       where
-        heading = HH.h1_ [HH.text (Tale.title tale)]
+        heading = HH.h1_ [text (Tale.title tale)]
         history = renderHistory (Model.history model)
         form = HH.form [onSubmit] [input]
         onSubmit = HE.onSubmit (HE.input_ (Submit (Model.inputField model)))
         input = HH.input [
-          HP.inputType HP.InputText,
+          HP.type_ HP.InputText,
           HP.placeholder "Enter command",
           HP.id_ "input",
           HE.onValueInput (HE.input UpdateDescription)
         ]
 
-    eval :: Query ~> H.ComponentDSL Model Query (Aff (Effects eff))
+    eval :: Query ~> H.ComponentDSL Model Query Void (Aff (Effects eff))
     eval = case _ of
       UpdateDescription field next -> do
         H.modify (Model.setInputField field)
         pure next
       Submit field next -> do
         H.modify (update field)
-        fromEff focus
+        liftEff focus
         pure next
 
 -- | Renders history to an array of HTML elements.
@@ -86,7 +93,7 @@ renderHistory =
 -- | Renders a historical entry to an HTML element.
 renderHistoricalEntry :: forall a. HistoricalEntry -> H.ComponentHTML a
 renderHistoricalEntry entry =
-  HH.p attributes [HH.text (Tuple.snd classAndString)]
+  HH.p attributes [text (Tuple.snd classAndString)]
   where
     classAndString = case entry of
       Message string -> Tuple "message" string
@@ -94,7 +101,7 @@ renderHistoricalEntry entry =
       Heading string -> Tuple "heading" string
       Error string -> Tuple "error" string
       Debug string -> Tuple "debug" string
-    attributes = [HP.class_ (HH.className (Tuple.fst classAndString))]
+    attributes = [HP.class_ (ClassName (Tuple.fst classAndString))]
 
 -- | Submits the contents of the input field to the command parser.
 update :: String -> Model -> Model

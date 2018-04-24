@@ -1,8 +1,7 @@
--- Copyright 2016 Ian D. Bollinger
+-- Copyright 2018 Ian D. Bollinger
 --
--- Licensed under the MIT license <LICENSE or
--- http://opensource.org/licenses/MIT>. This file may not be copied, modified,
--- or distributed except according to those terms.
+-- Licensed under the MIT license <https://spdx.org/licenses/MIT>. This file may
+-- not be copied, modified, or distributed except according to those terms.
 
 module Skald.Debug
   ( class Debug
@@ -11,12 +10,11 @@ module Skald.Debug
 
 import Prelude
 
-import Data.Array as Array
-import Data.Map as Map
 import Data.Map (Map)
-import Data.String as String
-import Data.StrMap as StrMap
+import Data.Map as Map
 import Data.StrMap (StrMap)
+import Data.StrMap as StrMap
+import Data.String as String
 import Data.Tuple (Tuple(..))
 
 class Debug a where
@@ -47,7 +45,7 @@ instance debugFunction :: Debug (a -> b) where
   debug _ = "<?>"
 
 instance debugStrMap :: Debug a => Debug (StrMap a) where
-  debug x = debug (Array.fromFoldable (StrMap.toList x))
+  debug x = debug (StrMap.toArrayWithKey Tuple x)
 
 instance debugMap :: (Debug a, Debug b) => Debug (Map a b) where
-  debug x = debug (Array.fromFoldable (Map.toList x))
+  debug x = debug (Map.toUnfoldable x :: Array (Tuple a b))

@@ -1,8 +1,7 @@
--- Copyright 2016 Ian D. Bollinger
+-- Copyright 2018 Ian D. Bollinger
 --
--- Licensed under the MIT license <LICENSE or
--- http://opensource.org/licenses/MIT>. This file may not be copied, modified,
--- or distributed except according to those terms.
+-- Licensed under the MIT license <https://spdx.org/licenses/MIT>. This file may
+-- not be copied, modified, or distributed except according to those terms.
 
 module Skald.Command
   ( module InternalExports
@@ -14,6 +13,7 @@ module Skald.Command
   ) where
 
 import Prelude
+
 import Control.Monad.Eff.Exception.Unsafe (unsafeThrow)
 import Control.Monad.State (get)
 import Control.Monad.Writer as Writer
@@ -25,6 +25,7 @@ import Data.Maybe (Maybe(..), fromMaybe)
 import Data.String as String
 import Data.String.Regex as Regex
 import Data.String.Regex (regex)
+import Data.String.Regex.Flags as RF
 import Data.Tuple (Tuple(..))
 import Skald.History as History
 import Skald.History (HistoricalEntry)
@@ -39,7 +40,7 @@ type Handler = CommandHandler
 type Map = CommandMap
 
 command :: String -> Command
-command string = case regex ("^(?:" <> string <> ")$") Regex.noFlags of
+command string = case regex ("^(?:" <> string <> ")$") RF.noFlags of
   Right regex' -> Command string regex'
   -- TODO: don't do this.
   Left error -> unsafeThrow "invalid regex"
@@ -80,7 +81,7 @@ parse field = do
 normalizeWhitespace :: String -> String
 normalizeWhitespace = Regex.replace whitespaceRegex " "
   where
-    whitespaceRegex = case regex "\\s+" Regex.noFlags of
+    whitespaceRegex = case regex "\\s+" RF.noFlags of
       Right regex' -> regex'
       -- NOTE: This cannot occur.
       Left error -> unsafeThrow "normalizeWhitespace failed."

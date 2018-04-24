@@ -1,9 +1,4 @@
 language: node_js
-dist: trusty
-sudo: required
-node_js: 6
-install:
-  - npm install --global purescript pulp bower
-  - npm install
-script:
-  - npm run build
+node_js: node
+install: yarn install
+script: yarn build:fast

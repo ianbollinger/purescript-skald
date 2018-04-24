@@ -1,0 +1,21 @@
+{
+  "name": "purescript-skald",
+  "set": "psc-0.11.7-20180418",
+  "source": "https://github.com/purescript/package-sets",
+  "depends": [
+    "aff",
+    "arrays",
+    "foldable-traversable",
+    "generics",
+    "halogen",
+    "either",
+    "lists",
+    "maps",
+    "maybe",
+    "monoid",
+    "prelude",
+    "strings",
+    "transformers",
+    "tuples"
+  ]
+}
